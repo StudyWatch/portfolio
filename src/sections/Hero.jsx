@@ -5,8 +5,11 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative h-[90vh] flex items-center justify-center text-white text-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/A_digital_illustration_in_a_futuristic_and_technol.png')" }}
+      className="relative min-h-screen flex items-center justify-center text-white text-center bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/portfolio/A_digital_illustration_in_a_futuristic_and_technol.png')",
+        backgroundColor: "#0b1120", // fallback לצבע כהה
+      }}
     >
       {/* שכבת כהות עדינה */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-navy/90 z-0" />
