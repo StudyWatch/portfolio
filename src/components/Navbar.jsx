@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 export default function Navbar({ toggleDarkMode, darkMode }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // עוגנים בלי / בתחילת הנתיב כדי שיתמכו ב-GitHub Pages (basename ב-HashRouter)
   const navLinks = [
-    { label: 'About', href: '/#about' },
-    { label: 'Skills', href: '/#skills' },
-    { label: 'Projects', href: '/#projects' },
-    { label: 'Testimonials', href: '/#testimonials' },
-    { label: 'Contact', href: '/#contact' },
+    { label: 'About', href: '#about' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Testimonials', href: '#testimonials' },
+    { label: 'Contact', href: '#contact' },
   ];
 
   return (
@@ -24,7 +25,7 @@ export default function Navbar({ toggleDarkMode, darkMode }) {
           </Link>
         </h1>
 
-        {/* ניווט בדסקטופ */}
+        {/* ניווט דסקטופ */}
         <div className="hidden md:flex items-center space-x-8 font-medium text-gray-800 dark:text-gray-100">
           {navLinks.map((link) => (
             <HashLink
@@ -36,14 +37,12 @@ export default function Navbar({ toggleDarkMode, darkMode }) {
               {link.label}
             </HashLink>
           ))}
-
-          {/* קישור לרזומה */}
           <Link to="/resume" className="hover:text-turquoise transition">
             Resume
           </Link>
         </div>
 
-        {/* מצב כהה + כפתור תפריט */}
+        {/* מצב כהה + כפתור תפריט מובייל */}
         <div className="flex items-center space-x-4">
           <button
             onClick={toggleDarkMode}
