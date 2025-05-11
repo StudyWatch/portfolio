@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { FaEnvelope, FaUser, FaCommentDots, FaPaperPlane } from 'react-icons/fa';
+import { FaEnvelope, FaUser, FaCommentDots, FaPaperPlane, FaWhatsapp } from 'react-icons/fa';
 
 export default function Contact() {
   const form = useRef();
@@ -19,12 +19,21 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="px-6 py-24 bg-gradient-to-b from-white to-lightgray dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100">
+    <section id="contact" className="px-6 py-28 bg-gradient-to-b from-white to-lightgray dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100">
       <div className="max-w-xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
-        <p className="mb-10 text-gray-600 dark:text-gray-400">
-          Have a question, opportunity or idea? Let’s talk and make it happen.
+        <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text">Contact Me</h2>
+        <p className="mb-10 text-gray-600 dark:text-gray-400 text-base">
+          Have a question, idea, or opportunity? Let’s connect. You can also reach out directly via WhatsApp.
         </p>
+
+        <a
+          href="https://wa.me/972586897174"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-white bg-green-500 hover:bg-green-600 px-5 py-3 rounded-full shadow-md transition mb-10"
+        >
+          <FaWhatsapp /> Message me on WhatsApp
+        </a>
 
         <form ref={form} onSubmit={sendEmail} className="space-y-6 text-left">
           <div className="relative shadow-sm">

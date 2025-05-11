@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 import Hero from './sections/Hero';
 import About from './sections/About';
@@ -11,16 +12,6 @@ import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
 import Resume from './sections/Resume';
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [pathname]);
-
-  return null;
-}
-
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -29,26 +20,29 @@ export default function App() {
   }, [darkMode]);
 
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Navbar toggleDarkMode={() => setDarkMode(!darkMode)} darkMode={darkMode} />
       <ScrollToTop />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <main>
-              <Hero />
-              <About />
-              <Skills />
-              <Projects />
-              <Testimonials />
-              <Contact />
-            </main>
-          }
-        />
-        <Route path="/resume" element={<Resume />} />
-      </Routes>
+      <main className="flex-grow">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Hero />
+                <About />
+                <Skills />
+                <Projects />
+                <Testimonials />
+                <Contact />
+              </>
+            }
+          />
+          <Route path="/resume" element={<Resume />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
 
       <Footer />
     </div>
