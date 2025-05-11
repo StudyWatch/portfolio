@@ -19,7 +19,7 @@ const projects = [
     tech: ['React', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'TensorFlow.js'],
     icons: [SiReact, SiTailwindcss, SiNodedotjs, SiPostgresql, SiTensorflow],
     demo: 'https://studywatch.app',
-    github: 'https://github.com/yourusername/studywatch',
+    github: 'https://github.com/StudyWatch/site',
     insights: 'Built from scratch including UX, AI logic, and backend integration.',
   },
   {
@@ -29,8 +29,8 @@ const projects = [
       'A heartfelt site for a personal tour guide. Tailored for mobile, it enables visitors to explore cultural tours with ease, personality, and elegance.',
     tech: ['React', 'Tailwind CSS', 'EmailJS', 'Google Maps'],
     icons: [SiReact, SiTailwindcss, SiGooglemaps],
-    demo: 'https://chanatours.netlify.app',
-    github: 'https://github.com/yourusername/chanatours',
+    demo: 'https://chana-tours.vercel.app/#hero',
+    github: 'https://github.com/StudyWatch/chanatours',
     insights: 'Created for a real-world client with direct feedback and revisions.',
   },
   {
@@ -41,7 +41,7 @@ const projects = [
     tech: ['React', 'Tailwind CSS', 'Context API'],
     icons: [SiReact, SiTailwindcss, SiShopify],
     demo: 'https://faucetshop.vercel.app',
-    github: 'https://github.com/yourusername/faucetshop',
+    github: 'https://github.com/StudyWatch/faucetshop',
     insights: 'Focused on state management and user experience in e-commerce flow.',
   },
 ];
