@@ -1,28 +1,7 @@
-import React, { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
-import {
-  FaEnvelope, FaUser, FaCommentDots, FaPaperPlane, FaWhatsapp
-} from 'react-icons/fa';
+import React, { useState } from "react";
 
 export default function Contact() {
-  const form = useRef();
   const [sent, setSent] = useState(false);
-
-  const sendEmail = (e) => {
-    e.preventDefault();
-    emailjs.sendForm(
-      'service_zw066nn',             // ✅ Service ID (נשאר כפי שהיה)
-      'template_0fkpc5k',            // ✅ Template ID החדש
-      form.current,
-      'ZXVy4fqrCJE41JHAs'            // ✅ Public Key החדש
-    )
-    .then(() => {
-      setSent(true);
-      form.current.reset();
-      setTimeout(() => setSent(false), 5000);
-    })
-    .catch(() => alert('Something went wrong. Please try again.'));
-  };
 
   return (
     <section id="contact" className="px-6 py-28 bg-gradient-to-b from-white to-lightgray dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100">
@@ -40,58 +19,58 @@ export default function Contact() {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-white bg-green-500 hover:bg-green-600 px-5 py-3 rounded-full shadow-md transition mb-10"
         >
-          <FaWhatsapp /> Message me on WhatsApp
+          💬 Message me on WhatsApp
         </a>
 
-        <form ref={form} onSubmit={sendEmail} className="space-y-6 text-left">
-          <div className="relative shadow-sm">
-            <FaUser className="absolute top-3 left-3 text-gray-500" />
-            <input
-              type="text"
-              name="user_name"
-              placeholder="Your Name"
-              required
-              className="w-full pl-10 p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-turquoise"
-            />
-          </div>
-
-          <div className="relative shadow-sm">
-            <FaEnvelope className="absolute top-3 left-3 text-gray-500" />
-            <input
-              type="email"
-              name="user_email"
-              placeholder="Your Email"
-              required
-              className="w-full pl-10 p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-turquoise"
-            />
-          </div>
-
-          <div className="relative shadow-sm">
-            <FaCommentDots className="absolute top-3 left-3 text-gray-500" />
-            <textarea
-              name="message"
-              rows="5"
-              placeholder="Your Message"
-              required
-              className="w-full pl-10 p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-turquoise"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-navy text-white py-3 rounded-md flex items-center justify-center gap-2 hover:bg-turquoise transition shadow-md"
-            title="Send Message"
+        {sent ? (
+          <p className="text-green-500 text-lg font-semibold">✅ Message sent successfully!</p>
+        ) : (
+          <form
+            action="https://formspree.io/f/manoznqa"
+            method="POST"
+            onSubmit={() => setSent(true)}
+            className="space-y-6 text-left"
           >
-            <FaPaperPlane />
-            {sent ? 'Message Sent 🎉' : 'Send Message'}
-          </button>
+            <input type="hidden" name="_captcha" value="false" />
 
-          {sent && (
-            <p className="text-center text-sm text-green-500 mt-4">
-              ✅ Thank you! Your message has been sent successfully.
-            </p>
-          )}
-        </form>
+            <div className="relative shadow-sm">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                required
+                className="w-full p-3 pl-4 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
+              />
+            </div>
+
+            <div className="relative shadow-sm">
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+                className="w-full p-3 pl-4 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
+              />
+            </div>
+
+            <div className="relative shadow-sm">
+              <textarea
+                name="message"
+                rows={5}
+                placeholder="Your Message"
+                required
+                className="w-full p-3 pl-4 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-navy text-white py-3 rounded-md flex items-center justify-center gap-2 hover:bg-turquoise transition shadow-md"
+            >
+              📧 Send Message
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );
