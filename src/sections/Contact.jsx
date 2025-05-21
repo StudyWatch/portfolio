@@ -10,20 +10,18 @@ export default function Contact() {
 
   const sendEmail = (e) => {
     e.preventDefault();
-    emailjs
-      emailjs.sendForm(
-  'service_zw066nn',               // Service ID
-  'template_xxxxxx',              // ❗ עדיין חסר - תכניס כאן את ה-Template ID שלך
-  form.current,
-  '9hLlwm4Htiwobl1_M'             // Public Key (הועתק מהתמונה)
-)
-
-      .then(() => {
-        setSent(true);
-        form.current.reset();
-        setTimeout(() => setSent(false), 5000);
-      })
-      .catch(() => alert('Something went wrong. Please try again.'));
+    emailjs.sendForm(
+      'service_zw066nn',               // ✅ Service ID שלך
+      'template_sj287ko',              // ✅ Template ID מתוך התמונה ששלחת
+      form.current,
+      '9hLlwm4Htiwobl1_M'              // ✅ Public Key שלך
+    )
+    .then(() => {
+      setSent(true);
+      form.current.reset();
+      setTimeout(() => setSent(false), 5000);
+    })
+    .catch(() => alert('Something went wrong. Please try again.'));
   };
 
   return (

@@ -18,8 +18,8 @@ const projects = [
       'An AI-powered platform that helps learners master vocabulary through TV shows. It features smart word extraction, gamified quizzes, and a multilingual interface.',
     tech: ['React', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'TensorFlow.js'],
     icons: [SiReact, SiTailwindcss, SiNodedotjs, SiPostgresql, SiTensorflow],
-    demo: 'https://studywatch.app',
-    github: 'https://github.com/StudyWatch/site',
+    demo: 'https://studywatch-swart.vercel.app/',
+    github: 'https://github.com/StudyWatch/studywatch',
     insights: 'Built from scratch including UX, AI logic, and backend integration.',
   },
   {
@@ -30,7 +30,7 @@ const projects = [
     tech: ['React', 'Tailwind CSS', 'EmailJS', 'Google Maps'],
     icons: [SiReact, SiTailwindcss, SiGooglemaps],
     demo: 'https://chana-tours.vercel.app/#hero',
-    github: 'https://github.com/StudyWatch/chanatours',
+    github: 'https://github.com/StudyWatch/Chana-tours',
     insights: 'Created for a real-world client with direct feedback and revisions.',
   },
   {
@@ -41,7 +41,7 @@ const projects = [
     tech: ['React', 'Tailwind CSS', 'Context API'],
     icons: [SiReact, SiTailwindcss, SiShopify],
     demo: 'https://faucet-shop-ngpl.vercel.app', // ✅ קישור מתוקן!
-    github: 'https://github.com/StudyWatch/faucetshop',
+    github: 'https://github.com/StudyWatch/faucet-shop',
     insights: 'Focused on state management and user experience in e-commerce flow.',
   },
 ];
