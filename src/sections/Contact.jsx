@@ -11,10 +11,10 @@ export default function Contact() {
   const sendEmail = (e) => {
     e.preventDefault();
     emailjs.sendForm(
-      'service_zw066nn',               // ✅ Service ID שלך
-      'template_sj287ko',              // ✅ Template ID מתוך התמונה ששלחת
+      'service_zw066nn',             // ✅ Service ID (נשאר כפי שהיה)
+      'template_0fkpc5k',            // ✅ Template ID החדש
       form.current,
-      '9hLlwm4Htiwobl1_M'              // ✅ Public Key שלך
+      'ZXVy4fqrCJE41JHAs'            // ✅ Public Key החדש
     )
     .then(() => {
       setSent(true);
@@ -44,7 +44,6 @@ export default function Contact() {
         </a>
 
         <form ref={form} onSubmit={sendEmail} className="space-y-6 text-left">
-          {/* Name */}
           <div className="relative shadow-sm">
             <FaUser className="absolute top-3 left-3 text-gray-500" />
             <input
@@ -56,7 +55,6 @@ export default function Contact() {
             />
           </div>
 
-          {/* Email */}
           <div className="relative shadow-sm">
             <FaEnvelope className="absolute top-3 left-3 text-gray-500" />
             <input
@@ -68,7 +66,6 @@ export default function Contact() {
             />
           </div>
 
-          {/* Message */}
           <div className="relative shadow-sm">
             <FaCommentDots className="absolute top-3 left-3 text-gray-500" />
             <textarea
@@ -80,7 +77,6 @@ export default function Contact() {
             />
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-navy text-white py-3 rounded-md flex items-center justify-center gap-2 hover:bg-turquoise transition shadow-md"
