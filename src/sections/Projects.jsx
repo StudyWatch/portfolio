@@ -40,11 +40,12 @@ const projects = [
       'A modern e-commerce site for premium bathroom accessories. It includes product filtering, a responsive cart modal, and a beautiful, clean layout.',
     tech: ['React', 'Tailwind CSS', 'Context API'],
     icons: [SiReact, SiTailwindcss, SiShopify],
-    demo: 'https://faucetshop.vercel.app',
+    demo: 'https://faucet-shop-ngpl.vercel.app', // ✅ קישור מתוקן!
     github: 'https://github.com/StudyWatch/faucetshop',
     insights: 'Focused on state management and user experience in e-commerce flow.',
   },
 ];
+
 
 export default function Projects() {
   return (

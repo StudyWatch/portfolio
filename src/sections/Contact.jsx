@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { FaEnvelope, FaUser, FaCommentDots, FaPaperPlane, FaWhatsapp } from 'react-icons/fa';
+import {
+  FaEnvelope, FaUser, FaCommentDots, FaPaperPlane, FaWhatsapp
+} from 'react-icons/fa';
 
 export default function Contact() {
   const form = useRef();
@@ -9,7 +11,13 @@ export default function Contact() {
   const sendEmail = (e) => {
     e.preventDefault();
     emailjs
-      .sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY')
+      emailjs.sendForm(
+  'service_zw066nn',               // Service ID
+  'template_xxxxxx',              // ❗ עדיין חסר - תכניס כאן את ה-Template ID שלך
+  form.current,
+  '9hLlwm4Htiwobl1_M'             // Public Key (הועתק מהתמונה)
+)
+
       .then(() => {
         setSent(true);
         form.current.reset();
@@ -21,7 +29,9 @@ export default function Contact() {
   return (
     <section id="contact" className="px-6 py-28 bg-gradient-to-b from-white to-lightgray dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100">
       <div className="max-w-xl mx-auto text-center">
-        <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text">Contact Me</h2>
+        <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text">
+          Contact Me
+        </h2>
         <p className="mb-10 text-gray-600 dark:text-gray-400 text-base">
           Have a question, idea, or opportunity? Let’s connect. You can also reach out directly via WhatsApp.
         </p>
@@ -36,6 +46,7 @@ export default function Contact() {
         </a>
 
         <form ref={form} onSubmit={sendEmail} className="space-y-6 text-left">
+          {/* Name */}
           <div className="relative shadow-sm">
             <FaUser className="absolute top-3 left-3 text-gray-500" />
             <input
@@ -47,6 +58,7 @@ export default function Contact() {
             />
           </div>
 
+          {/* Email */}
           <div className="relative shadow-sm">
             <FaEnvelope className="absolute top-3 left-3 text-gray-500" />
             <input
@@ -58,6 +70,7 @@ export default function Contact() {
             />
           </div>
 
+          {/* Message */}
           <div className="relative shadow-sm">
             <FaCommentDots className="absolute top-3 left-3 text-gray-500" />
             <textarea
@@ -69,6 +82,7 @@ export default function Contact() {
             />
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-navy text-white py-3 rounded-md flex items-center justify-center gap-2 hover:bg-turquoise transition shadow-md"
