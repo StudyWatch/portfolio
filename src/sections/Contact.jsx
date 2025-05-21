@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React from 'react';
+import { useForm, ValidationError } from '@formspree/react';
+import {
+  FaEnvelope, FaUser, FaCommentDots, FaPaperPlane, FaWhatsapp
+} from 'react-icons/fa';
 
 export default function Contact() {
-  const [sent, setSent] = useState(false);
+  const [state, handleSubmit] = useForm("manoznqa");
 
   return (
     <section id="contact" className="px-6 py-28 bg-gradient-to-b from-white to-lightgray dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100">
@@ -19,55 +23,60 @@ export default function Contact() {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-white bg-green-500 hover:bg-green-600 px-5 py-3 rounded-full shadow-md transition mb-10"
         >
-          💬 Message me on WhatsApp
+          <FaWhatsapp /> Message me on WhatsApp
         </a>
 
-        {sent ? (
-          <p className="text-green-500 text-lg font-semibold">✅ Message sent successfully!</p>
+        {state.succeeded ? (
+          <p className="text-center text-green-500 font-semibold text-lg">✅ Thank you! Your message has been sent successfully.</p>
         ) : (
-          <form
-            action="https://formspree.io/f/manoznqa"
-            method="POST"
-            onSubmit={() => setSent(true)}
-            className="space-y-6 text-left"
-          >
-            <input type="hidden" name="_captcha" value="false" />
-
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
             <div className="relative shadow-sm">
+              <FaUser className="absolute top-3 left-3 text-gray-500" />
               <input
+                id="name"
                 type="text"
                 name="name"
                 placeholder="Your Name"
                 required
-                className="w-full p-3 pl-4 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
+                className="w-full pl-10 p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-turquoise"
               />
+              <ValidationError prefix="Name" field="name" errors={state.errors} />
             </div>
 
             <div className="relative shadow-sm">
+              <FaEnvelope className="absolute top-3 left-3 text-gray-500" />
               <input
+                id="email"
                 type="email"
                 name="email"
                 placeholder="Your Email"
                 required
-                className="w-full p-3 pl-4 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
+                className="w-full pl-10 p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-turquoise"
               />
+              <ValidationError prefix="Email" field="email" errors={state.errors} />
             </div>
 
             <div className="relative shadow-sm">
+              <FaCommentDots className="absolute top-3 left-3 text-gray-500" />
               <textarea
+                id="message"
                 name="message"
-                rows={5}
+                rows="5"
                 placeholder="Your Message"
                 required
-                className="w-full p-3 pl-4 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800"
+                className="w-full pl-10 p-3 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-turquoise"
               />
+              <ValidationError prefix="Message" field="message" errors={state.errors} />
             </div>
 
             <button
               type="submit"
+              disabled={state.submitting}
               className="w-full bg-navy text-white py-3 rounded-md flex items-center justify-center gap-2 hover:bg-turquoise transition shadow-md"
+              title="Send Message"
             >
-              📧 Send Message
+              <FaPaperPlane />
+              {state.submitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         )}
