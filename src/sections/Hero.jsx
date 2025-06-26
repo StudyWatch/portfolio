@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center text-white text-center bg-cover bg-center"
+      className="relative min-h-screen flex items-center justify-center text-white text-center bg-cover bg-center pt-20 md:pt-28"
       style={{
         backgroundImage: "url('/portfolio/A_digital_illustration_in_a_futuristic_and_technol.png')",
         backgroundColor: "#0b1120", // fallback לצבע כהה
