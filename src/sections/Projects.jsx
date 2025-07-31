@@ -18,6 +18,12 @@ import studywatchImg3 from '../assets/studywatch-3.png';
 import studywatchImg4 from '../assets/studywatch-4.png';
 import studywatchImg5 from '../assets/studywatch-5.png';
 
+// תמונות מסך של Bali Hofesh (הקפד לשים את התמונות האלו ב־src/assets)
+import baliHofeshImg1 from '../assets/bali-hofesh-1.png';
+import baliHofeshImg2 from '../assets/bali-hofesh-2.png';
+import baliHofeshImg3 from '../assets/bali-hofesh-3.png';
+import baliHofeshImg4 from '../assets/bali-hofesh-4.png';
+
 const projects = [
   {
     title: 'StudyWatch',
@@ -28,6 +34,21 @@ const projects = [
     demo: 'https://studywatch-swart.vercel.app/',
     github: 'https://github.com/StudyWatch/studywatch',
     insights: 'Built with AI word extraction, custom backend logic, and multilingual support.',
+  },
+  {
+    title: 'Bali Hofesh',
+    images: [
+      baliHofeshImg1,
+      baliHofeshImg2,
+      baliHofeshImg3,
+      baliHofeshImg4,
+    ],
+    description: 'הפלטפורמה החכמה לסטודנטים של האוניברסיטה הפתוחה בישראל. לוח בחינות אישי, התראות, קורסים, מורים פרטיים, הטבות, שותפי למידה ועוד!',
+    tech: ['React', 'Tailwind CSS', 'Supabase', 'TypeScript', 'PWA'],
+    icons: [SiReact, SiTailwindcss, SiPostgresql],
+    demo: 'https://bali-hofesh.vercel.app',
+    github: 'https://github.com/StudyWatch/BaliHofesh',
+    insights: 'מערכת מתקדמת בעברית הכוללת לוח שנה, לוחות ניהול, חנות, והרבה פיצ׳רים יחודיים. פותח עם דגש על שימושיות וביצועים לסטודנטים בישראל.',
   },
   {
     title: 'SmartPacking',
@@ -91,7 +112,11 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="relative px-6 py-32 bg-gradient-to-br from-white via-lightgray to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100">
+    <section
+      id="projects"
+      className="relative px-6 py-32 bg-gradient-to-br from-white via-lightgray to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100"
+      dir="rtl"
+    >
       <div className="max-w-6xl mx-auto text-center">
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
@@ -99,7 +124,7 @@ export default function Projects() {
           transition={{ duration: 0.6 }}
           className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text"
         >
-          Featured Projects
+          פרויקטים נבחרים
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -107,7 +132,7 @@ export default function Projects() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg text-gray-600 dark:text-gray-400 mb-20 max-w-2xl mx-auto"
         >
-          Beautiful, performant, real-world apps developed with attention to design and purpose.
+          אפליקציות מרהיבות, מהירות וחדשניות, עם דגש על עיצוב, נגישות ותכלית.
         </motion.p>
 
         <div className="space-y-24">
@@ -119,9 +144,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: idx * 0.2 }}
-                className={`group md:flex rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition duration-500 ${
-                  idx % 2 === 1 ? 'md:flex-row-reverse' : ''
-                }`}
+                className={`group md:flex rounded-3xl overflow-hidden bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition duration-500 ${idx % 2 === 1 ? 'md:flex-row-reverse' : ''}`}
               >
                 <div className="md:w-1/2 h-72 md:h-[400px] relative overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-700">
                   <AnimatePresence mode="wait">
@@ -154,9 +177,7 @@ export default function Projects() {
                         {proj.images.map((_, i) => (
                           <div
                             key={i}
-                            className={`w-2 h-2 rounded-full ${
-                              currentSlides[idx] === i ? 'bg-white' : 'bg-white/40'
-                            }`}
+                            className={`w-2 h-2 rounded-full ${currentSlides[idx] === i ? 'bg-white' : 'bg-white/40'}`}
                           ></div>
                         ))}
                       </div>
@@ -164,11 +185,10 @@ export default function Projects() {
                   )}
                 </div>
 
-                <div className="md:w-1/2 p-8 sm:p-12 space-y-6 text-left flex flex-col justify-center">
+                <div className="md:w-1/2 p-8 sm:p-12 space-y-6 text-right flex flex-col justify-center">
                   <h3 className="text-3xl font-bold text-navy dark:text-cyan-300">{proj.title}</h3>
                   <p className="text-base text-gray-700 dark:text-gray-300">{proj.description}</p>
                   <p className="text-sm italic text-gray-500 dark:text-gray-400">{proj.insights}</p>
-
                   <div className="flex flex-wrap gap-2">
                     {proj.tech.map((tech, i) => (
                       <span key={i} className="bg-gray-100 dark:bg-gray-700 text-xs text-gray-800 dark:text-gray-200 px-3 py-1 rounded-full">
@@ -176,7 +196,6 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
-
                   <div className="flex flex-wrap items-center gap-4 pt-2">
                     <a
                       href={proj.demo}
@@ -184,7 +203,7 @@ export default function Projects() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-sm px-5 py-2 bg-gradient-to-r from-navy to-blue-700 text-white rounded-full hover:scale-105 transition"
                     >
-                      Live Demo <FaExternalLinkAlt />
+                      דמו חי <FaExternalLinkAlt />
                     </a>
                     <a
                       href={proj.github}
@@ -195,7 +214,6 @@ export default function Projects() {
                       GitHub <FaGithub />
                     </a>
                   </div>
-
                   <div className="flex gap-4 pt-4 text-2xl text-gray-500 dark:text-gray-300">
                     {proj.icons.map((Icon, i) => (
                       <Icon key={i} title={proj.tech[i]} className="hover:scale-110 hover:text-turquoise transition" />
