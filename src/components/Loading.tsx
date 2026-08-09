@@ -10,8 +10,13 @@ import Marquee from "react-fast-marquee";
 // the site immediately on a known failure, but this is the last-resort net
 // for anything that hangs without ever rejecting or resolving — a stalled
 // fetch, a WASM (DRACO) decode that never settles, etc. The site must never
-// stay behind this overlay forever.
-const SAFETY_TIMEOUT_MS = 8000;
+// stay behind this overlay forever. 12s (not 8s) because a cold-cache fetch
+// + DRACO decode + GPU compile of the ~4.3MB hero GLB legitimately took
+// 8-14s in production testing — an 8s cutoff was firing on ordinary slow
+// connections, not just genuine failures (harmless either way since the
+// avatar still fades in once loadCharacter() resolves, but this reduces how
+// often a real, successful load gets preempted by the fallback).
+const SAFETY_TIMEOUT_MS = 12000;
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
