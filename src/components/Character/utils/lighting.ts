@@ -23,12 +23,24 @@ const setLighting = (scene: THREE.Scene) => {
 
   new RGBELoader()
     .setPath(assetPath("models/"))
-    .load("command-environment.hdr", function (texture) {
-      texture.mapping = THREE.EquirectangularReflectionMapping;
-      scene.environment = texture;
-      scene.environmentIntensity = 0;
-      scene.environmentRotation.set(5.76, 85.85, 1);
-    });
+    .load(
+      "command-environment.hdr",
+      function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.environment = texture;
+        scene.environmentIntensity = 0;
+        scene.environmentRotation.set(5.76, 85.85, 1);
+      },
+      undefined,
+      function (error) {
+        // Not fatal — the scene renders fine without an environment map,
+        // just with flatter lighting. Doesn't block character loading
+        // (that's a separate loader/promise), but log it so a missing/
+        // broken HDR under a deployed base path is diagnosable instead of
+        // silently swallowed.
+        console.error("[lighting] Failed to load command-environment.hdr:", error);
+      }
+    );
 
   function setPointLight(screenMaterial: THREE.MeshStandardMaterial | null) {
     if (!screenMaterial) return;

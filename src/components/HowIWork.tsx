@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import "./styles/HowIWork.css";
 import { assetPath } from "../utils/assetPath";
+import ErrorBoundary from "./ErrorBoundary";
 
 const PUSHUPS2_GLB = assetPath("models/pushups2.glb");
 const PUSHUPS1_GLB = assetPath("models/pushups1.glb");
@@ -39,17 +40,21 @@ const HowIWork = () => {
       <div className="how-i-work-header">
         <div className="how-i-work-avatar-col how-i-work-avatar-col-left">
           {window.innerWidth > 1024 && (
-            <Suspense fallback={null}>
-              <HowIWorkAvatar modelPath={PUSHUPS2_GLB} viewAngle="threeQuarter" />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <HowIWorkAvatar modelPath={PUSHUPS2_GLB} viewAngle="threeQuarter" />
+              </Suspense>
+            </ErrorBoundary>
           )}
         </div>
         <div className="how-i-work-heading">
           <div className="how-i-work-avatar-col-mobile">
             {window.innerWidth <= 1024 && (
-              <Suspense fallback={null}>
-                <HowIWorkAvatar modelPath={PUSHUPS2_GLB} viewAngle="threeQuarter" />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={null}>
+                  <HowIWorkAvatar modelPath={PUSHUPS2_GLB} viewAngle="threeQuarter" />
+                </Suspense>
+              </ErrorBoundary>
             )}
           </div>
           <h2>
@@ -61,9 +66,11 @@ const HowIWork = () => {
         </div>
         <div className="how-i-work-avatar-col how-i-work-avatar-col-right">
           {window.innerWidth > 1024 && (
-            <Suspense fallback={null}>
-              <HowIWorkAvatar modelPath={PUSHUPS1_GLB} viewAngle="side" />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <HowIWorkAvatar modelPath={PUSHUPS1_GLB} viewAngle="side" />
+              </Suspense>
+            </ErrorBoundary>
           )}
         </div>
       </div>

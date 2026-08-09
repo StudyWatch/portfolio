@@ -35,20 +35,41 @@ const Scene = () => {
     // live one for control of the shared canvas.
     let cancelled = false;
 
+    // 3D is an enhancement, not a hard dependency — a blocked/failed WebGL
+    // context (mobile GPU/memory limits, too many contexts already open,
+    // WebGL disabled) throws synchronously right here. Without this guard
+    // that throw is uncaught inside a passive effect with no error boundary
+    // above it, which unmounts the ENTIRE app — not just the hero — leaving
+    // nothing but the page's raw black body background. Catch it, log it,
+    // and force the loader to reveal the rest of the portfolio instead.
     let rect = canvasDiv.current.getBoundingClientRect();
     let container = { width: rect.width, height: rect.height };
     const aspect = container.width / container.height;
     const scene = sceneRef.current!;
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-    });
-    renderer.setSize(container.width, container.height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
-    canvasDiv.current.appendChild(renderer.domElement);
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+      });
+      renderer.setSize(container.width, container.height);
+      // Capped — an uncapped devicePixelRatio on high-density mobile
+      // screens (3x/4x) multiplies fragment shader cost far beyond what the
+      // visual gain is worth and is a real mobile GPU/memory pressure
+      // source.
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1;
+      canvasDiv.current.appendChild(renderer.domElement);
+    } catch (error) {
+      console.error(
+        "[Scene] Failed to create the WebGL renderer — showing the portfolio without the 3D hero.",
+        error
+      );
+      setLoading(100);
+      return;
+    }
 
     // Base position is a reasonable guess for a roughly human-scale rig —
     // it gets re-fitted to the loaded avatar's actual bounds below, since
@@ -127,6 +148,22 @@ const Scene = () => {
       onResize = () =>
         handleResize(renderer, camera, canvasDiv, character!, screens!, headBone);
       window.addEventListener("resize", onResize);
+    })
+    .catch((error) => {
+      if (cancelled) return;
+      // Covers both a rejected loadCharacter() (network failure, missing
+      // GLB, DRACO decode failure, mobile memory/GPU exception during
+      // parsing) and any synchronous throw inside the .then() above (e.g.
+      // an unexpected rig missing an expected bone). Either way, the site
+      // must not stay behind the loading overlay forever with no avatar to
+      // show for it — force the loader to 100% so the existing completion
+      // sequence (which also restores scroll and runs the hero-text intro)
+      // still runs without the 3D-specific lighting/animation start.
+      console.error(
+        "[Scene] Character failed to load — revealing the portfolio without the 3D hero.",
+        error
+      );
+      progress.clear();
     });
 
     let mouse = { x: 0, y: 0 },

@@ -11,6 +11,7 @@ import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
+import ErrorBoundary from "./ErrorBoundary";
 
 const TechStack = lazy(() => import("./TechStack"));
 
@@ -61,9 +62,11 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Work />
             <OtherWork />
             {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
-                <TechStack />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={<div>Loading....</div>}>
+                  <TechStack />
+                </Suspense>
+              </ErrorBoundary>
             )}
             <Contact />
           </div>

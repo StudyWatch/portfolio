@@ -1,24 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 import { assetPath } from "../utils/assetPath";
 
 import Marquee from "react-fast-marquee";
 
+// Hard ceiling on how long the loading overlay can block the site. 3D
+// (WebGL/GLB) init has its own error handling (see Scene.tsx) that reveals
+// the site immediately on a known failure, but this is the last-resort net
+// for anything that hangs without ever rejecting or resolving — a stalled
+// fetch, a WASM (DRACO) decode that never settles, etc. The site must never
+// stay behind this overlay forever.
+const SAFETY_TIMEOUT_MS = 8000;
+
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
+  // Both the natural percent-100 path and the safety timeout below can
+  // trigger completion — guard so it only ever runs once (re-running would
+  // re-fire initialFX's SplitText/GSAP setup on already-split DOM nodes).
+  const completionTriggered = useRef(false);
 
-  if (percent >= 100) {
-    setTimeout(() => {
+  useEffect(() => {
+    if (percent < 100 || completionTriggered.current) return;
+    completionTriggered.current = true;
+    const t = setTimeout(() => {
       setLoaded(true);
       setTimeout(() => {
         setIsLoaded(true);
       }, 1000);
     }, 600);
-  }
+    return () => clearTimeout(t);
+  }, [percent]);
+
+  useEffect(() => {
+    const failSafe = setTimeout(() => {
+      if (completionTriggered.current) return;
+      console.warn(
+        "[Loading] Safety timeout reached — revealing the site regardless of 3D init state."
+      );
+      completionTriggered.current = true;
+      setLoaded(true);
+      setTimeout(() => setIsLoaded(true), 1000);
+    }, SAFETY_TIMEOUT_MS);
+    return () => clearTimeout(failSafe);
+  }, []);
 
   useEffect(() => {
     import("./utils/initialFX").then((module) => {
