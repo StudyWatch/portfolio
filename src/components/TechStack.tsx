@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
 import {
@@ -186,8 +186,59 @@ function Pointer({ vec, isActive }: PointerProps) {
   );
 }
 
+// The camera was tuned once for a wide desktop aspect (position z: 20,
+// fov: 32.5) and left untouched here for that case. On a narrow/portrait
+// canvas the SAME vertical fov maps to a much smaller horizontal fov
+// (hFov = 2*atan(tan(vFov/2) * aspect)), so at a phone aspect (~0.46) the
+// cluster was almost entirely cropped off the sides - this is why
+// TechStack was disabled on mobile rather than just looking bad there.
+//
+// Fix: for aspect ratios narrower than roughly "landscape", pull the
+// camera back just enough that a fixed world-space radius still fits
+// both the width and height of the frame (same fit-to-both-axes approach
+// as HowIWorkAvatar's camera framing). The desktop branch reproduces the
+// original fixed z/fov exactly, so desktop framing is unchanged.
+const DESKTOP_FOV = 32.5;
+const DESKTOP_Z = 20;
+// Half-extent (world units) the settled cluster actually occupies at the
+// original desktop framing, with a little margin - the number the mobile
+// fit solves around so the same cluster reads as "the same composition,
+// just smaller," not cropped.
+const CLUSTER_RADIUS = 6;
+
+function ResponsiveCameraRig() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    const persp = camera as THREE.PerspectiveCamera;
+    const aspect = size.width / size.height;
+
+    persp.fov = DESKTOP_FOV;
+
+    if (aspect >= 1.2) {
+      persp.position.set(0, 0, DESKTOP_Z);
+    } else {
+      const vFovRad = THREE.MathUtils.degToRad(DESKTOP_FOV);
+      const distanceForHeight = CLUSTER_RADIUS / Math.tan(vFovRad / 2);
+      const hFovRad = 2 * Math.atan(Math.tan(vFovRad / 2) * aspect);
+      const distanceForWidth = CLUSTER_RADIUS / Math.tan(hFovRad / 2);
+      const distance = Math.max(distanceForHeight, distanceForWidth);
+      persp.position.set(0, 0, distance);
+    }
+
+    persp.updateProjectionMatrix();
+  }, [camera, size]);
+
+  return null;
+}
+
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
+  // Only gates postprocessing/shadow cost, never the physics/pointer
+  // behavior - the cluster itself renders identically on every width.
+  const [isNarrow, setIsNarrow] = useState(
+    () => window.innerWidth <= 1024
+  );
   const [hovered, setHovered] = useState<TechItem | null>(null);
   // Tooltip position is tracked via ref + direct DOM writes, never React
   // state - mousemove firing setState would re-render this whole subtree
@@ -232,6 +283,22 @@ const TechStack = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(
+        () => setIsNarrow(window.innerWidth <= 1024),
+        200
+      );
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
   const [textures, setTextures] = useState<Map<string, THREE.Texture> | null>(
     null
   );
@@ -264,19 +331,20 @@ const TechStack = () => {
       <h2>Applied AI · Backend &amp; Data · Full-Stack · Automation</h2>
 
       <Canvas
-        shadows
+        shadows={!isNarrow}
         gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
       >
+        <ResponsiveCameraRig />
         <ambientLight intensity={1} />
         <spotLight
           position={[20, 20, 25]}
           penumbra={1}
           angle={0.2}
           color="white"
-          castShadow
+          castShadow={!isNarrow}
           shadow-mapSize={[512, 512]}
         />
         <directionalLight position={[0, 5, -4]} intensity={2} />
@@ -297,9 +365,11 @@ const TechStack = () => {
           environmentIntensity={0.5}
           environmentRotation={[0, 4, 2]}
         />
-        <EffectComposer enableNormalPass={false}>
-          <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
-        </EffectComposer>
+        {!isNarrow && (
+          <EffectComposer enableNormalPass={false}>
+            <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
+          </EffectComposer>
+        )}
       </Canvas>
 
       {hovered && (

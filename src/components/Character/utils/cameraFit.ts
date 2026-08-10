@@ -39,6 +39,16 @@ export function computeCameraPlan(
   const distanceForHeight = (h: number) =>
     (h * camera.zoom) / (2 * Math.tan(verticalFovRad / 2));
 
+  // Horizontal counterpart of distanceForHeight, deriving the effective
+  // horizontal FOV from the camera's actual aspect ratio. Only needed on
+  // narrow/portrait aspects (see heroDistance below) - on the wide desktop
+  // aspect this stays unused and the hero framing is untouched.
+  const distanceForWidth = (w: number) => {
+    const horizontalFovRad =
+      2 * Math.atan(Math.tan(verticalFovRad / 2) * camera.aspect);
+    return (w * camera.zoom) / (2 * Math.tan(horizontalFovRad / 2));
+  };
+
   // Hero: face, glasses, beard, shoulders, upper torso and a hint of
   // waist - balanced rather than a tight crop. The look-at point sits well
   // below the head (toward the chest) so there's real headroom above the
@@ -49,7 +59,20 @@ export function computeCameraPlan(
     headWorldPos.y - size.y * 0.14,
     headWorldPos.z
   );
-  const heroDistance = distanceForHeight(size.y * 0.54);
+  let heroDistance = distanceForHeight(size.y * 0.54);
+
+  // On a narrow/portrait aspect (mobile), the same vertical hero crop maps
+  // to a much narrower horizontal FOV, which can clip the wave's raised arm
+  // outside the frame. Pull the camera back just enough that the arm's
+  // reach also fits horizontally, without touching the pose/wave math
+  // itself - purely a responsive framing distance.
+  if (camera.aspect < 1) {
+    const armReachWidth = size.x * 0.9;
+    heroDistance = Math.max(
+      heroDistance,
+      distanceForWidth(armReachWidth)
+    );
+  }
 
   // Body: pulled back enough to show the full standing figure and the
   // command screens around it as a workstation composition.
