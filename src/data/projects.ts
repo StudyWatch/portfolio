@@ -24,37 +24,51 @@ export interface MediaGroup {
 
 export interface Project {
   id: string;
+  /** The umbrella system this project belongs to, shown as a small kicker above the name — e.g. "BaliHofesh". Omitted for standalone products. */
+  system?: string;
   name: string;
   category: string;
   tools: string;
   /** The hard part + outcome, one crisp sentence — not a full case study. */
   insight: string;
-  media: MediaGroup[];
+  /** Omitted (or empty) renders a text-only card instead of ProjectGallery — for projects with no curated screenshots yet, rather than inventing media. */
+  media?: MediaGroup[];
   link?: string;
 }
 
-// Three flagship products only. Every media item below is a real screenshot
-// Timor captured himself from the live products (see PROJECTS_DIR) — not a
-// stock/placeholder image and not fabricated. adminsettingbalihofesh.png was
-// deliberately excluded: it exposes a live WhatsApp support number in
-// plaintext, which fails the "sanitize personal/private data" bar this pass
-// is held to.
+// Five featured moments, not five separate companies — BaliHofesh is one
+// real system, but the Degree Planner and the Exam/AI Grading Engine are
+// each substantial enough to earn their own full presentation stop in the
+// Work journey rather than being buried as tabs inside one card. The
+// `system` field carries that relationship in the copy ("BaliHofesh —
+// Featured System — Degree Planner") without pretending they're separate
+// products. The former standalone "AI Grading Engine" card is folded into
+// the Exam System moment here — same real system (BaliHofesh's AI-checked
+// exam bank), same architecture diagram, just presented as one moment
+// instead of two.
 //
-// AI Grading Engine gets its own top-billed entry even though it technically
-// lives inside the BaliHofesh repo — it's a distinct Applied AI case study
-// (structured outputs, validation, shadow-mode safety), not a full-stack
-// CRUD story, so it stays a separate project rather than a BaliHofesh
-// sub-section. Its image is a pipeline-architecture diagram
-// (public/images/work/grading-engine-architecture.svg), built directly from
-// facts already verified elsewhere in this portfolio (techStack.ts,
-// Career.tsx, About.tsx, WhatIDo.tsx) — not invented.
+// Order is deliberate, not chronological: BaliHofesh first (largest, most
+// substantial), then Relive second so the first three featured moments
+// don't all read as the same product — variety before circling back to the
+// deeper BaliHofesh engineering systems, then closing on StudyWatch.
+//
+// Every media item below is a real screenshot Timor captured himself from
+// the live products (see PROJECTS_DIR) — not a stock/placeholder image and
+// not fabricated. adminsettingbalihofesh.png was deliberately excluded: it
+// exposes a live WhatsApp support number in plaintext, which fails the
+// "sanitize personal/private data" bar this pass is held to. StudyWatch has
+// no curated screenshots available, so it renders as a text card (see
+// ProjectGallery's fallback) rather than an invented gallery — its copy is
+// the same accurate description already used for it in Other Work, not new
+// claims.
 const PROJECTS_DIR = assetPath("images/projects");
 
 export const projects: Project[] = [
   {
-    id: "balihofesh",
+    id: "balihofesh-platform",
+    system: "BaliHofesh",
     name: "BaliHofesh",
-    category: "AI-powered student platform",
+    category: "Featured System — Platform Overview",
     tools:
       "React, TypeScript, Supabase, PostgreSQL, 51 edge functions, Stripe + Bit/Hyp",
     insight:
@@ -72,67 +86,6 @@ export const projects: Project[] = [
             type: "image",
             src: `${PROJECTS_DIR}/admindashboardbalihofesh.png`,
             alt: "BaliHofesh admin control center — 30+ platform management modules",
-          },
-        ],
-      },
-      {
-        label: "Degree Planner",
-        items: [
-          {
-            type: "image",
-            src: `${PROJECTS_DIR}/degreebuilder1.png`,
-            alt: "Degree Planner onboarding — starting from existing progress or a fresh plan",
-          },
-          {
-            type: "image",
-            src: `${PROJECTS_DIR}/degreebuilder2.png`,
-            alt: "Choosing a degree program, with credit requirements per track",
-          },
-          {
-            type: "image",
-            src: `${PROJECTS_DIR}/degreebuilder4.png`,
-            alt: "Configuring program constraints — duration, summer semesters, pacing",
-          },
-          {
-            type: "image",
-            src: `${PROJECTS_DIR}/degreebuilder3.png`,
-            alt: "The resulting semester-by-semester study plan with a smart course-placement bank",
-          },
-        ],
-      },
-      {
-        label: "Exam System",
-        items: [
-          {
-            type: "image",
-            src: `${PROJECTS_DIR}/examengine1.png`,
-            alt: "AI-powered exam bank — real past exams and drills, organized per course",
-          },
-          {
-            type: "image",
-            src: `${PROJECTS_DIR}/examengine2.png`,
-            alt: "Course exam list with automatic AI answer-checking",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "grading-engine",
-    name: "AI Grading Engine",
-    category: "Fail-closed LLM exam evaluation",
-    tools:
-      "OpenAI, shadow-mode calibration, rubric-secure grading, canonical schema pipeline",
-    insight:
-      "Never fabricates a score — new grading logic runs in an isolated shadow store until proven, before it ever touches a real grade.",
-    media: [
-      {
-        label: "Architecture",
-        items: [
-          {
-            type: "image",
-            src: assetPath("images/work/grading-engine-architecture.svg"),
-            alt: "AI Grading Engine pipeline: exam input, structured LLM output, Zod validation boundary, course rubric rules, a fail-closed gate, shadow-mode calibration, and final grade + feedback",
           },
         ],
       },
@@ -188,5 +141,87 @@ export const projects: Project[] = [
         ],
       },
     ],
+  },
+  {
+    id: "balihofesh-degree-planner",
+    system: "BaliHofesh",
+    name: "BaliHofesh",
+    category: "Featured System — Degree Planner",
+    tools: "React, TypeScript, Supabase, constraint-based scheduling",
+    insight:
+      "A smart course-placement bank fits real degree requirements around each student's own constraints — pacing, summer semesters, credits already earned — not a static checklist.",
+    media: [
+      {
+        label: "Degree Planner",
+        items: [
+          {
+            type: "image",
+            src: `${PROJECTS_DIR}/degreebuilder1.png`,
+            alt: "Degree Planner onboarding — starting from existing progress or a fresh plan",
+          },
+          {
+            type: "image",
+            src: `${PROJECTS_DIR}/degreebuilder2.png`,
+            alt: "Choosing a degree program, with credit requirements per track",
+          },
+          {
+            type: "image",
+            src: `${PROJECTS_DIR}/degreebuilder4.png`,
+            alt: "Configuring program constraints — duration, summer semesters, pacing",
+          },
+          {
+            type: "image",
+            src: `${PROJECTS_DIR}/degreebuilder3.png`,
+            alt: "The resulting semester-by-semester study plan with a smart course-placement bank",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "balihofesh-exam-system",
+    system: "BaliHofesh",
+    name: "BaliHofesh",
+    category: "Featured System — Exam / AI Exam Engine",
+    tools:
+      "OpenAI, Supabase, shadow-mode calibration, canonical schema pipeline",
+    insight:
+      "An AI-checked exam bank backed by a fail-closed grading engine — new grading logic proves itself in an isolated shadow store before it ever touches a real grade. Never fabricates a score.",
+    media: [
+      {
+        label: "Exam Bank",
+        items: [
+          {
+            type: "image",
+            src: `${PROJECTS_DIR}/examengine1.png`,
+            alt: "AI-powered exam bank — real past exams and drills, organized per course",
+          },
+          {
+            type: "image",
+            src: `${PROJECTS_DIR}/examengine2.png`,
+            alt: "Course exam list with automatic AI answer-checking",
+          },
+        ],
+      },
+      {
+        label: "Grading Architecture",
+        items: [
+          {
+            type: "image",
+            src: assetPath("images/work/grading-engine-architecture.svg"),
+            alt: "AI Grading Engine pipeline: exam input, structured LLM output, Zod validation boundary, course rubric rules, a fail-closed gate, shadow-mode calibration, and final grade + feedback",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "studywatch",
+    name: "StudyWatch",
+    category: "Language-learning platform",
+    tools: "React, Node.js, PostgreSQL, AI word extraction",
+    insight:
+      "Extracts vocabulary from real TV episodes and turns it into quizzes and games — earlier full-stack work, built solo end to end.",
+    link: "https://studywatch-swart.vercel.app/",
   },
 ];

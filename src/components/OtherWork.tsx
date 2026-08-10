@@ -10,14 +10,9 @@ interface OtherProject {
 // Lighter treatment, deliberately — these are earlier/smaller projects, not
 // flagship case studies. Everything else built (a handful of thin client
 // demos, an unedited AI-builder prototype, coursework) was left out.
+// StudyWatch moved to the featured My Work journey — kept out of here to
+// avoid showing it twice.
 const otherProjects: OtherProject[] = [
-  {
-    name: "StudyWatch",
-    description:
-      "Language-learning platform that extracts vocabulary from real TV episodes and turns it into quizzes and games.",
-    tech: "React · Node.js · PostgreSQL · AI word extraction",
-    link: "https://studywatch-swart.vercel.app/",
-  },
   {
     name: "Shift Scheduler",
     description:

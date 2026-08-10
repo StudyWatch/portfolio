@@ -70,6 +70,56 @@
   margin: 0;
   font-weight: 600;
 }
+.work-textcard {
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  border: 1px solid #262220;
+  border-radius: 10px;
+  background-color: #0e0c0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.work-textcard-mark {
+  font-size: 42px;
+  font-weight: 600;
+  color: #eae5ec;
+}
+.work-textcard-tagline {
+  font-size: 14px;
+  font-weight: 300;
+  color: #9aa3ab;
+  margin: 0;
+  max-width: 80%;
+}
+.work-textcard-link {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--accentColor);
+  border: 1px solid #363636;
+  border-radius: 20px;
+  padding: 8px 18px;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.work-textcard-link:hover {
+  border-color: var(--accentColor);
+  color: #fff;
+}
+.work-system {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accentColor);
+  margin-bottom: 4px;
+}
 
 .work-info h4 {
   font-size: 18px;
@@ -144,11 +194,62 @@
     gap: 20px;
   }
 }
-@media only screen and (max-width: 1025px) {
+/* Mobile: plain stacked vertical flow, one full project per frame — no pin,
+   no horizontal rail (see Work.tsx, which skips the ScrollTrigger entirely
+   below this breakpoint). Normal document scroll alone carries the user
+   through each project in order, so there's no geometry to get wrong. */
+@media only screen and (max-width: 1024px) {
+  .work-section {
+    height: auto;
+  }
   .work-container {
     align-content: normal;
+    height: auto;
   }
   .work-flex {
+    flex-direction: column;
     height: auto;
+    width: 100%;
+    margin-left: 0;
+    padding-right: 0;
+  }
+  .work-flex::before,
+  .work-flex::after {
+    display: none;
+  }
+  .work-box {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #363636;
+    padding: 60px 0;
+  }
+  .work-flex .work-box:first-child {
+    padding-top: 0;
+  }
+  .work-flex .work-box:last-child {
+    border-bottom: none;
+  }
+  /* Every project reads text-then-media on mobile, regardless of its
+     position in the desktop alternating layout — consistent order is
+     easier to scan when stacked. */
+  .work-flex .work-box:nth-child(even) {
+    flex-direction: column;
+  }
+  .work-title > div {
+    text-align: left;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .work-title h3 {
+    font-size: 36px;
+    line-height: 36px;
+  }
+  .work-box {
+    padding: 44px 0;
+    gap: 30px;
+  }
+  .work-section h2 {
+    font-size: 42px;
+    margin-top: 60px;
   }
 }
