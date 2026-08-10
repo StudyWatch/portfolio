@@ -249,6 +249,9 @@ const TechStack = () => {
   // it once.
   const pointerScreenRef = useRef({ x: 0, y: 0 });
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const [textures, setTextures] = useState<Map<string, THREE.Texture> | null>(
+    null
+  );
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     pointerScreenRef.current = { x: e.clientX, y: e.clientY };
@@ -258,30 +261,67 @@ const TechStack = () => {
     }
   };
 
+  // The old activation check compared window.scrollY (document-space) to
+  // element.getBoundingClientRect().top (viewport-space) directly - two
+  // different coordinate systems, which made the simulation wake up around
+  // halfway down the page instead of near TechStack itself.
+  //
+  // IntersectionObserver alone is the "correct" fix, but it's a single
+  // fragile path: its callback can be delayed or skipped entirely in some
+  // environments (backgrounded/occluded tabs, certain instant scroll-jumps),
+  // and there's no worse failure mode here than "the balls silently never
+  // wake up." So this activation is deliberately redundant: the observer is
+  // the primary signal, but a debounced scroll/resize listener independently
+  // re-checks the same geometry directly via getBoundingClientRect (this
+  // time correctly - both sides of the comparison in viewport space), plus
+  // one immediate synchronous check on mount so activation never depends on
+  // waiting for a first scroll or a first observer tick.
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const margin = 400;
+    const checkProximity = () => {
+      const rect = node.getBoundingClientRect();
+      const near =
+        rect.top < window.innerHeight + margin && rect.bottom > -margin;
+      setIsActive(near);
     };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
-    });
-    window.addEventListener("scroll", handleScroll);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsActive(entry.isIntersecting),
+      // Wakes the physics/render loop shortly before the section is
+      // actually on-screen, so the cluster is already settled by the time
+      // it's visible, and keeps it awake slightly after leaving to avoid
+      // flicker on small scroll-direction reversals right at the edge.
+      { rootMargin: `${margin}px 0px ${margin}px 0px`, threshold: 0 }
+    );
+    observer.observe(node);
+
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(checkProximity, 150);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    checkProximity();
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+      clearTimeout(scrollTimeout);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
-  }, []);
+    // Re-run once `textures` finishes loading: before that, the component
+    // returns an early, ref-less placeholder (see the `!textures` branch
+    // below), so sectionRef.current is still null on the very first mount
+    // and this effect would otherwise bail out permanently, leaving
+    // isActive stuck false forever - the actual root cause of the balls
+    // never waking up in production.
+  }, [textures]);
 
   useEffect(() => {
     let resizeTimeout: ReturnType<typeof setTimeout>;
@@ -298,10 +338,6 @@ const TechStack = () => {
       window.removeEventListener("resize", onResize);
     };
   }, []);
-
-  const [textures, setTextures] = useState<Map<string, THREE.Texture> | null>(
-    null
-  );
 
   useEffect(() => {
     let cancelled = false;
@@ -327,7 +363,11 @@ const TechStack = () => {
   }
 
   return (
-    <div className="techstack" onPointerMove={handlePointerMove}>
+    <div
+      className="techstack"
+      ref={sectionRef}
+      onPointerMove={handlePointerMove}
+    >
       <h2>Applied AI · Backend &amp; Data · Full-Stack · Automation</h2>
 
       <Canvas
@@ -336,6 +376,12 @@ const TechStack = () => {
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
+        dpr={isNarrow ? [1, 1.4] : [1, 1.75]}
+        // Physics stepping and rendering both ride the same R3F per-frame
+        // loop, so "demand" fully stops both while the section is out of
+        // view - not just the visual draw - without unmounting the canvas
+        // (no re-init flash/black-screen on scrolling back).
+        frameloop={isActive ? "always" : "demand"}
       >
         <ResponsiveCameraRig />
         <ambientLight intensity={1} />

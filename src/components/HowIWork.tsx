@@ -1,10 +1,11 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import "./styles/HowIWork.css";
 import { assetPath } from "../utils/assetPath";
 import ErrorBoundary from "./ErrorBoundary";
 
-const PUSHUPS2_GLB = assetPath("models/pushups2.glb");
-const PUSHUPS1_GLB = assetPath("models/pushups1.glb");
+// One shared source file - see HowIWorkAvatar.tsx for how pushups1.glb and
+// pushups2.glb were confirmed to be the same asset before consolidating.
+const PUSHUPS_GLB = assetPath("models/pushups1.glb");
 
 const HowIWorkAvatar = lazy(() => import("./HowIWorkAvatar"));
 
@@ -35,24 +36,58 @@ const TRAITS: Trait[] = [
 ];
 
 const HowIWork = () => {
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  // Two separate flags on purpose: `everNear` latches true the first time
+  // the section gets close and never resets - that's what decides whether
+  // the avatars mount/download at all, so scrolling past once doesn't
+  // un-load them. `active` tracks CURRENT proximity and just gates the
+  // already-mounted canvases' render loops, toggling freely as the user
+  // scrolls back and forth.
+  const [everNear, setEverNear] = useState(false);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setActive(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setEverNear(true);
+        }
+      },
+      { rootMargin: "400px 0px 400px 0px", threshold: 0 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="how-i-work-section">
+    <div className="how-i-work-section" ref={sectionRef}>
       <div className="how-i-work-header">
         <div className="how-i-work-avatar-col how-i-work-avatar-col-left">
-          {window.innerWidth > 1024 && (
+          {window.innerWidth > 1024 && everNear && (
             <ErrorBoundary>
               <Suspense fallback={null}>
-                <HowIWorkAvatar modelPath={PUSHUPS2_GLB} viewAngle="threeQuarter" />
+                <HowIWorkAvatar
+                  modelPath={PUSHUPS_GLB}
+                  viewAngle="threeQuarter"
+                  active={active}
+                />
               </Suspense>
             </ErrorBoundary>
           )}
         </div>
         <div className="how-i-work-heading">
           <div className="how-i-work-avatar-col-mobile">
-            {window.innerWidth <= 1024 && (
+            {window.innerWidth <= 1024 && everNear && (
               <ErrorBoundary>
                 <Suspense fallback={null}>
-                  <HowIWorkAvatar modelPath={PUSHUPS2_GLB} viewAngle="threeQuarter" />
+                  <HowIWorkAvatar
+                    modelPath={PUSHUPS_GLB}
+                    viewAngle="threeQuarter"
+                    active={active}
+                  />
                 </Suspense>
               </ErrorBoundary>
             )}
@@ -65,10 +100,14 @@ const HowIWork = () => {
           </p>
         </div>
         <div className="how-i-work-avatar-col how-i-work-avatar-col-right">
-          {window.innerWidth > 1024 && (
+          {window.innerWidth > 1024 && everNear && (
             <ErrorBoundary>
               <Suspense fallback={null}>
-                <HowIWorkAvatar modelPath={PUSHUPS1_GLB} viewAngle="side" />
+                <HowIWorkAvatar
+                  modelPath={PUSHUPS_GLB}
+                  viewAngle="side"
+                  active={active}
+                />
               </Suspense>
             </ErrorBoundary>
           )}

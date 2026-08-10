@@ -35,6 +35,7 @@ import { computeCameraPlan } from "./utils/cameraFit";
 import {
   setCharTimeline,
   setAllTimeline,
+  clearCharTimelineResources,
 } from "../utils/GsapScroll";
 
 import {
@@ -106,10 +107,17 @@ const Scene = () => {
         container.height
       );
 
+      // Desktop and mobile get different caps rather than a flat 2x: mobile
+      // GPUs pay for every extra rendered pixel far more than desktop ones
+      // do, and a phone's devicePixelRatio (often 3+) buys very little
+      // perceptible sharpness past ~1.5x for this scene.
+      const dprCap =
+        window.innerWidth <= 1024 ? 1.5 : 1.75;
+
       renderer.setPixelRatio(
         Math.min(
           window.devicePixelRatio,
-          2
+          dprCap
         )
       );
 
@@ -494,14 +502,59 @@ const Scene = () => {
 
     let rafId = 0;
 
+    // The character's own container is position:fixed and stays visible
+    // (via GSAP scrub tweens on its transform) through the whole
+    // Landing -> About -> WhatIDo arc, then GSAP animates it fully off
+    // -screen (translateY(-100%)) before How I Work. Watching this same
+    // element's actual rendered visibility - rather than re-deriving the
+    // scroll-position math GsapScroll.ts already owns - means this stays
+    // correct automatically if that choreography is ever retuned.
+    let isVisible = true;
+    let isTabVisible = !document.hidden;
+
+    const visibilityObserver =
+      new IntersectionObserver(
+        ([entry]) => {
+          isVisible =
+            entry.isIntersecting;
+        },
+        { threshold: 0 }
+      );
+
+    if (canvasDiv.current) {
+      visibilityObserver.observe(
+        canvasDiv.current
+      );
+    }
+
+    const onDocumentVisibility =
+      () => {
+        isTabVisible =
+          !document.hidden;
+      };
+
+    document.addEventListener(
+      "visibilitychange",
+      onDocumentVisibility
+    );
+
     const animate = () => {
       rafId =
         requestAnimationFrame(
           animate
         );
 
+      // Always advance the clock so a resumed frame gets a normal small
+      // delta instead of one large jump covering the whole paused span.
       const delta =
         clock.getDelta();
+
+      if (
+        !isVisible ||
+        !isTabVisible
+      ) {
+        return;
+      }
 
       /**
        * Correct order:
@@ -547,6 +600,15 @@ const Scene = () => {
       cancelAnimationFrame(
         rafId
       );
+
+      visibilityObserver.disconnect();
+
+      document.removeEventListener(
+        "visibilitychange",
+        onDocumentVisibility
+      );
+
+      clearCharTimelineResources();
 
       clearTimeout(
         debounce

@@ -1,16 +1,19 @@
 import * as THREE from "three";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useGLTF, useAnimations } from "@react-three/drei";
+import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 
 // Same Timor - same face, hair, glasses, beard as the hero - just a small,
 // tasteful "effort" moment for How I Work. pushups1.glb and pushups2.glb
-// share byte-identical animation data (verified directly against every
-// channel's keyframe buffer) - they're the same pose/rig, re-exported with
-// a different embedded texture, not two different angles. The left/right
-// visual distinction below (three-quarter vs. side-on) is therefore created
-// with two different camera azimuths around the same pose, not by relying
-// on the assets to differ on their own.
+// turned out to be the exact same asset (verified by hashing every
+// accessor/animation buffer and every embedded image - all byte-identical,
+// just repacked with the bufferViews in a different order), so there's only
+// one source file now. The left/right visual distinction below
+// (three-quarter vs. side-on) comes entirely from two different camera
+// azimuths around the same loaded pose - each instance clones the loaded
+// scene via SkeletonUtils so the two views can animate/pose independently
+// without fighting over one shared skeleton.
 type ViewAngle = "threeQuarter" | "side";
 
 const CAMERA_AZIMUTH: Record<ViewAngle, { x: number; z: number }> = {
@@ -27,7 +30,17 @@ type PushupsModelProps = {
 };
 
 function PushupsModel({ modelPath, viewAngle }: PushupsModelProps) {
-  const { scene, animations } = useGLTF(modelPath);
+  // useGLTF caches by URL and returns the SAME parsed scene/skeleton to
+  // every caller of the same path - fine for a single instance, but two
+  // avatars sharing one live skeleton would fight over the same bone
+  // transforms. SkeletonUtils.clone makes each instance its own
+  // independent skinned-mesh graph (correctly re-binding bones, unlike a
+  // plain Object3D.clone) from the one loaded/decoded source.
+  const { scene: sourceScene, animations } = useGLTF(modelPath);
+  const scene = useMemo(
+    () => cloneSkeleton(sourceScene) as THREE.Object3D,
+    [sourceScene]
+  );
   const { actions, mixer } = useAnimations(animations, scene);
   const { camera } = useThree();
   const [ready, setReady] = useState(false);
@@ -111,15 +124,20 @@ function PushupsModel({ modelPath, viewAngle }: PushupsModelProps) {
 type HowIWorkAvatarProps = {
   modelPath: string;
   viewAngle: ViewAngle;
+  // Whether this avatar is near/inside the viewport. Gates the R3F render
+  // loop only - never unmounts - so scrolling back into view resumes the
+  // same live scene instantly instead of re-loading/re-fitting the camera.
+  active: boolean;
 };
 
-const HowIWorkAvatar = ({ modelPath, viewAngle }: HowIWorkAvatarProps) => {
+const HowIWorkAvatar = ({ modelPath, viewAngle, active }: HowIWorkAvatarProps) => {
   return (
     <div className="how-i-work-avatar">
       <Canvas
         camera={{ fov: 28, near: 0.1, far: 50 }}
         gl={{ alpha: true, antialias: true }}
         dpr={[1, 1.5]}
+        frameloop={active ? "always" : "demand"}
       >
         <ambientLight intensity={1.1} />
         <directionalLight position={[3, 4, 5]} intensity={1.6} color="#f2b273" />

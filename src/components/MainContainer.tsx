@@ -1,4 +1,10 @@
-import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
+import {
+  lazy,
+  PropsWithChildren,
+  Suspense,
+  useEffect,
+  useState,
+} from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -62,7 +68,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Work />
             <OtherWork />
             <ErrorBoundary>
-              <Suspense fallback={<div>Loading....</div>}>
+              <Suspense fallback={<div className="techstack" />}>
                 <TechStack />
               </Suspense>
             </ErrorBoundary>

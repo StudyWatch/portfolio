@@ -4,6 +4,28 @@ import { activeAvatarProfile } from "../Character/avatarProfile";
 import type { CommandScreens } from "../Character/utils/screens";
 import type { CameraPlan } from "../Character/utils/cameraFit";
 
+// setCharTimeline creates two persistent, non-ScrollTrigger-driven
+// resources (the glow-intensity interval and the infinite screen-glow
+// timeline) that keep running/ticking forever once started. handleResize
+// calls setCharTimeline again on every resize/orientation change, so
+// without explicit ownership here each call would leave the previous
+// interval and timeline running underneath the new ones - accumulating
+// duplicate glow loops indefinitely. Track the currently-owned instances
+// at module scope and kill/clear them before creating new ones.
+let glowInterval: ReturnType<typeof setInterval> | undefined;
+let glowTimeline: gsap.core.Timeline | undefined;
+
+export function clearCharTimelineResources() {
+  if (glowInterval !== undefined) {
+    clearInterval(glowInterval);
+    glowInterval = undefined;
+  }
+  if (glowTimeline) {
+    glowTimeline.kill();
+    glowTimeline = undefined;
+  }
+}
+
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera,
@@ -11,6 +33,8 @@ export function setCharTimeline(
   characterSize: THREE.Vector3,
   cameraPlan: CameraPlan
 ) {
+  clearCharTimelineResources();
+
   // Every camera move below is expressed as an offset from the camera's
   // already-fitted base position, scaled to the avatar's own height (`unit`)
   // - never an absolute world coordinate. That's what keeps the landing →
@@ -29,7 +53,7 @@ export function setCharTimeline(
   const applyGaze = () => camera.lookAt(gazeTarget);
 
   let intensity: number = 0;
-  setInterval(() => {
+  glowInterval = setInterval(() => {
     intensity = Math.random();
   }, 200);
   const tl1 = gsap.timeline({
@@ -71,7 +95,7 @@ export function setCharTimeline(
   // Reactive "screen glow" - the center display's flicker drives the point
   // light (see lighting.ts), the same emissive->light coupling technique as
   // the reference project, just pointed at our own procedural screens.
-  gsap
+  glowTimeline = gsap
     .timeline({ repeat: -1, repeatRefresh: true })
     .to(screens.keyMaterial, {
       emissiveIntensity: () => 1.2 + intensity * 2.2,

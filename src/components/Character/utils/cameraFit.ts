@@ -59,7 +59,7 @@ export function computeCameraPlan(
     headWorldPos.y - size.y * 0.14,
     headWorldPos.z
   );
-  let heroDistance = distanceForHeight(size.y * 0.54);
+  let heroDistance = distanceForHeight(size.y * 0.505);
 
   // On a narrow/portrait aspect (mobile), the same vertical hero crop maps
   // to a much narrower horizontal FOV, which can clip the wave's raised arm
@@ -67,7 +67,7 @@ export function computeCameraPlan(
   // reach also fits horizontally, without touching the pose/wave math
   // itself - purely a responsive framing distance.
   if (camera.aspect < 1) {
-    const armReachWidth = size.x * 0.9;
+    const armReachWidth = size.x * 0.78;
     heroDistance = Math.max(
       heroDistance,
       distanceForWidth(armReachWidth)
