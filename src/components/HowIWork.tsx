@@ -13,16 +13,16 @@ interface Trait {
   body: string;
 }
 
-// Every line here maps to something checkable in the Work section — no
+// Every line here maps to something checkable in the Work section - no
 // trait is listed unless a real project backs it up.
 const TRAITS: Trait[] = [
   {
     title: "Ownership",
-    body: "I take things from a rough idea through architecture, implementation, and the unglamorous parts — auth, payments, monitoring — that decide whether something survives contact with real users. BaliHofesh and Relive were both built and run by me, end to end.",
+    body: "I take things from a rough idea through architecture, implementation, and the unglamorous parts - auth, payments, monitoring - that decide whether something survives contact with real users. BaliHofesh and Relive were both built and run by me, end to end.",
   },
   {
     title: "Creative Problem-Solving",
-    body: "The obvious implementation is rarely the right one for a hard problem. The AI grading engine never trusts a new rule directly — it proves itself in an isolated shadow store first, because a wrong grade is worse than no grade.",
+    body: "The obvious implementation is rarely the right one for a hard problem. The AI grading engine never trusts a new rule directly - it proves itself in an isolated shadow store first, because a wrong grade is worse than no grade.",
   },
   {
     title: "Curiosity",
@@ -30,7 +30,7 @@ const TRAITS: Trait[] = [
   },
   {
     title: "Collaboration",
-    body: "Before any of this I led intelligence-collection teams under real pressure — small groups, high stakes, no room to assume everyone's aligned. That instinct for clear handoffs and honest feedback carries straight into how I work with other engineers.",
+    body: "Before any of this I led intelligence-collection teams under real pressure - small groups, high stakes, no room to assume everyone's aligned. That instinct for clear handoffs and honest feedback carries straight into how I work with other engineers.",
   },
 ];
 

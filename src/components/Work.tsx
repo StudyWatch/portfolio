@@ -11,7 +11,7 @@ const DESKTOP_BREAKPOINT = 1024;
 
 const Work = () => {
   useGSAP(() => {
-    // Mobile gets a plain stacked-vertical layout (see Work.css) — no pin,
+    // Mobile gets a plain stacked-vertical layout (see Work.css) - no pin,
     // no horizontal rail. Trying to reuse the desktop pin/translate rig at
     // narrow widths was the root cause of "I mostly just see Relive on
     // mobile": the horizontal geometry doesn't translate to a column layout
@@ -22,7 +22,7 @@ const Work = () => {
     let timeline: gsap.core.Timeline | undefined;
 
     // Three-phase choreography: (1) an entrance "dwell" where scrolling is
-    // consumed but nothing moves — so project 1 (already fully visible the
+    // consumed but nothing moves - so project 1 (already fully visible the
     // instant the pin engages, since each .work-box is sized to fit inside
     // the pinned viewport) gets real reading time instead of starting to
     // slide away on the very first wheel tick; (2) the horizontal journey
@@ -30,7 +30,7 @@ const Work = () => {
     // stop gets a readable rest, not just a snapshot mid-slide; (3) an exit
     // dwell once the final project fully arrives, before the pin releases.
     // Dwell/move budgets are in "px" units that map 1:1 to real scroll
-    // pixels — see the `end` calculation below, which sums the exact same
+    // pixels - see the `end` calculation below, which sums the exact same
     // numbers, so GSAP's scrub stretches the whole timeline across exactly
     // that many scrolled pixels.
     function buildTimeline() {
@@ -64,7 +64,7 @@ const Work = () => {
         interDwellPx * Math.max(0, stepCount - 1) +
         exitDwellPx;
 
-      // Snap to the boundary between every dwell/move segment — releasing
+      // Snap to the boundary between every dwell/move segment - releasing
       // mid-move always completes (or reverts) that step instead of leaving
       // a project half-slid-in; releasing inside a dwell zone is already
       // resting, so the snap is a no-op there.
@@ -120,7 +120,7 @@ const Work = () => {
       resizeTimeout = setTimeout(() => {
         // Crossing the desktop/mobile breakpoint mid-session is a rare
         // enough edge case (device rotation on a tablet at the boundary)
-        // that a full reload-quality rebuild isn't worth the complexity —
+        // that a full reload-quality rebuild isn't worth the complexity -
         // only rebuild while still on the desktop side.
         if (window.innerWidth > DESKTOP_BREAKPOINT) buildTimeline();
       }, 200);
@@ -128,7 +128,7 @@ const Work = () => {
     window.addEventListener("resize", onResize);
 
     // Gallery screenshots load asynchronously; refreshing once they're in
-    // (and once webfonts settle) catches any late layout shift — this
+    // (and once webfonts settle) catches any late layout shift - this
     // affects where the trigger's "top" starts (page content above it
     // reflowing), not the pixel budgets above, which stay valid across a
     // refresh since `end` is relative to `start`.

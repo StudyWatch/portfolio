@@ -34,7 +34,7 @@ export const handleTouchEnd = (
   }, 2000);
 };
 
-// Natural limits for a head look-at-cursor effect — generous enough to read
+// Natural limits for a head look-at-cursor effect - generous enough to read
 // as "following the cursor", tight enough to never look broken. Pitch is
 // intentionally asymmetric: heads read as more natural with a bit more
 // downward range than upward.
@@ -43,7 +43,7 @@ const MAX_PITCH_UP = THREE.MathUtils.degToRad(12);
 const MAX_PITCH_DOWN = THREE.MathUtils.degToRad(16);
 
 // Below this scroll position, the cursor owns the head. Past it, scroll
-// choreography owns the head instead — this is the entire priority system:
+// choreography owns the head instead - this is the entire priority system:
 // exactly one source ever writes to the head bone in a given frame, so
 // there is nothing to fight over.
 const SCROLLED_LOOK_THRESHOLD = 200;
@@ -72,7 +72,7 @@ export const handleHeadRotation = (
     headBone.rotation.y = lerp(headBone.rotation.y, targetYaw, interpolationY);
     headBone.rotation.x = lerp(headBone.rotation.x, targetPitch, interpolationX);
   } else if (window.innerWidth > 1024) {
-    // Scroll has carried the scene past the hero — settle into a fixed
+    // Scroll has carried the scene past the hero - settle into a fixed
     // "looking at the workstation" pose. Slow, constant damping makes the
     // handoff read as a deliberate settle rather than a snap.
     headBone.rotation.x = lerp(headBone.rotation.x, -0.4, SETTLE_DAMPING);

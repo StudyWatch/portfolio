@@ -194,7 +194,7 @@
     gap: 20px;
   }
 }
-/* Mobile: plain stacked vertical flow, one full project per frame — no pin,
+/* Mobile: plain stacked vertical flow, one full project per frame - no pin,
    no horizontal rail (see Work.tsx, which skips the ScrollTrigger entirely
    below this breakpoint). Normal document scroll alone carries the user
    through each project in order, so there's no geometry to get wrong. */
@@ -230,7 +230,7 @@
     border-bottom: none;
   }
   /* Every project reads text-then-media on mobile, regardless of its
-     position in the desktop alternating layout — consistent order is
+     position in the desktop alternating layout - consistent order is
      easier to scan when stacked. */
   .work-flex .work-box:nth-child(even) {
     flex-direction: column;

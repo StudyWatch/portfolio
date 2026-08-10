@@ -8,11 +8,11 @@ import Marquee from "react-fast-marquee";
 // Hard ceiling on how long the loading overlay can block the site. 3D
 // (WebGL/GLB) init has its own error handling (see Scene.tsx) that reveals
 // the site immediately on a known failure, but this is the last-resort net
-// for anything that hangs without ever rejecting or resolving — a stalled
+// for anything that hangs without ever rejecting or resolving - a stalled
 // fetch, a WASM (DRACO) decode that never settles, etc. The site must never
 // stay behind this overlay forever. 12s (not 8s) because a cold-cache fetch
 // + DRACO decode + GPU compile of the ~4.3MB hero GLB legitimately took
-// 8-14s in production testing — an 8s cutoff was firing on ordinary slow
+// 8-14s in production testing - an 8s cutoff was firing on ordinary slow
 // connections, not just genuine failures (harmless either way since the
 // avatar still fades in once loadCharacter() resolves, but this reduces how
 // often a real, successful load gets preempted by the fallback).
@@ -24,7 +24,7 @@ const Loading = ({ percent }: { percent: number }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
   // Both the natural percent-100 path and the safety timeout below can
-  // trigger completion — guard so it only ever runs once (re-running would
+  // trigger completion - guard so it only ever runs once (re-running would
   // re-fire initialFX's SplitText/GSAP setup on already-split DOM nodes).
   const completionTriggered = useRef(false);
 
@@ -44,7 +44,7 @@ const Loading = ({ percent }: { percent: number }) => {
     const failSafe = setTimeout(() => {
       if (completionTriggered.current) return;
       console.warn(
-        "[Loading] Safety timeout reached — revealing the site regardless of 3D init state."
+        "[Loading] Safety timeout reached - revealing the site regardless of 3D init state."
       );
       completionTriggered.current = true;
       setLoaded(true);

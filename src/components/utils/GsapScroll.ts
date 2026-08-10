@@ -13,14 +13,14 @@ export function setCharTimeline(
 ) {
   // Every camera move below is expressed as an offset from the camera's
   // already-fitted base position, scaled to the avatar's own height (`unit`)
-  // — never an absolute world coordinate. That's what keeps the landing →
+  // - never an absolute world coordinate. That's what keeps the landing →
   // about → whatIDo moves reading as one continuous camera move instead of
   // three independently-tuned jumps, and keeps it correct regardless of
   // which avatar (placeholder or final) is mounted.
   const unit = characterSize.y;
   const baseCameraPos = camera.position.clone();
 
-  // The camera's look-AT point is animated alongside its position — a
+  // The camera's look-AT point is animated alongside its position - a
   // plain object GSAP can tween, applied via onUpdate. Without this the
   // rotation set once in Scene.tsx would stay frozen at the hero framing
   // while position moves, so pulling back for the body reveal would aim
@@ -50,7 +50,7 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  // This trigger deliberately runs LONGER than ".whatIDO" itself — it ends
+  // This trigger deliberately runs LONGER than ".whatIDO" itself - it ends
   // once How I Work's own top has scrolled to viewport center, not at
   // WhatIDo's bottom edge. character-model is position:fixed, so its exit
   // has to be FULLY complete (not partway through a short scrub range)
@@ -68,7 +68,7 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  // Reactive "screen glow" — the center display's flicker drives the point
+  // Reactive "screen glow" - the center display's flicker drives the point
   // light (see lighting.ts), the same emissive->light coupling technique as
   // the reference project, just pointed at our own procedural screens.
   gsap
@@ -158,27 +158,27 @@ export function setCharTimeline(
       // Screens deliberately do NOT fade in here. They used to (tied to
       // this same About-section scrub), which meant they were already
       // fully opaque before the user had even reached the WhatIDo
-      // trigger — covering "Applied AI"/"Full-Stack" the moment those
+      // trigger - covering "Applied AI"/"Full-Stack" the moment those
       // cards appeared. Their reveal now lives entirely in tl3, sequenced
       // as its own beat after WhatIDo has had scroll time to be read. See
       // screens.ts: materials start at opacity 0, so simply not touching
       // them here is enough to keep them hidden through this whole pull-back.
 
-      // WhatIDo's own beat: nothing here — the section's cards are already
+      // WhatIDo's own beat: nothing here - the section's cards are already
       // driven by their own reveal (see WhatIDo.tsx / the `what-box-in`
       // tween below), and get the full 0–25% of this (now much longer)
       // scrub to be read with nothing overlapping them.
       tl3
-        // 20%–40%: the project command surface gets its own reveal —
+        // 20%–40%: the project command surface gets its own reveal -
         // screens fade in one at a time, with the character turning
         // slightly back toward them as if presenting the work.
         .to(character.rotation, { y: 0.55, duration: 1.6, delay: 1.6 }, 0)
-        // 40%–62%: hold — screens fully visible and readable, character
+        // 40%–62%: hold - screens fully visible and readable, character
         // still present, nothing else moving. This is the beat where the
         // project screens are the main focus, per spec.
         // 62%–100%: exit. Character (and everything in its canvas, screens
         // included) slides off together, with the full remaining range to
-        // complete in — well clear of How I Work's own content.
+        // complete in - well clear of How I Work's own content.
         .fromTo(
           ".character-model",
           { y: "0%" },

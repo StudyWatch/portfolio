@@ -18,7 +18,7 @@ const setCharacter = (
       loader.load(
         glbPath,
         async (gltf) => {
-          // This callback is async but nothing awaits it — without this
+          // This callback is async but nothing awaits it - without this
           // try/catch, a rejection from compileAsync (shader compile
           // failure, context loss, mobile GPU/memory pressure) would be an
           // unhandled rejection that never calls resolve() or reject(),

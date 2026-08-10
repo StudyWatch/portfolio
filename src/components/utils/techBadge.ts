@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import type { TechItem } from "../../data/techStack";
 
-// Procedural sphere textures for every tech-stack item — logos included.
+// Procedural sphere textures for every tech-stack item - logos included.
 // A full-bleed color fill means there's no transparent/black dead zone as
 // the sphere rotates: every ball reads as a designed, colored object rather
 // than a dark orb with a small icon on it. Logo images are composited on

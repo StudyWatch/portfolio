@@ -221,24 +221,26 @@ h2.landing-info-h2 {
   font-weight: 600;
   position: relative;
   margin-left: -5px;
+  /* Clips the char slide-in/out transition (see LoopText in
+     initialFX.ts, which animates chars through y: 80 -> 0 -> -80) so
+     the swap stays confined to this box instead of a full opaque
+     overlay erasing the resting word underneath it. */
+  overflow: hidden;
+  /* Cinematic reflection: a real mirrored duplicate of the rendered
+     text, not a mask over the text itself, so the primary word stays
+     fully readable. Fades out fast and stays subtle. Chromium/WebKit
+     only (no Firefox) - degrades to "no reflection", never to
+     "unreadable text". */
+  -webkit-box-reflect: below 4px
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0) 65%
+    );
 }
 .landing-h2-2 {
   position: absolute;
   top: 0;
-}
-.landing-info-h2::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 120%;
-  z-index: 3;
-  background-image: linear-gradient(
-    0deg,
-    var(--backgroundColor) 40%,
-    rgba(0, 0, 0, 0) 110%
-  );
-  top: 0;
-  left: 0;
 }
 @media screen and (min-width: 500px) {
   .landing-circle2 {

@@ -3,10 +3,10 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useGLTF, useAnimations } from "@react-three/drei";
 
-// Same Timor — same face, hair, glasses, beard as the hero — just a small,
+// Same Timor - same face, hair, glasses, beard as the hero - just a small,
 // tasteful "effort" moment for How I Work. pushups1.glb and pushups2.glb
 // share byte-identical animation data (verified directly against every
-// channel's keyframe buffer) — they're the same pose/rig, re-exported with
+// channel's keyframe buffer) - they're the same pose/rig, re-exported with
 // a different embedded texture, not two different angles. The left/right
 // visual distinction below (three-quarter vs. side-on) is therefore created
 // with two different camera azimuths around the same pose, not by relying
@@ -41,7 +41,7 @@ function PushupsModel({ modelPath, viewAngle }: PushupsModelProps) {
   useEffect(() => {
     if (fitted.current) return;
     fitted.current = true;
-    // Advance into the loop before measuring bounds — the bind pose isn't
+    // Advance into the loop before measuring bounds - the bind pose isn't
     // representative of the animated (prone/plank) silhouette.
     mixer.update(0.6);
 
@@ -59,7 +59,7 @@ function PushupsModel({ modelPath, viewAngle }: PushupsModelProps) {
     // when the camera looks straight down one axis. Once the camera swings
     // toward a side-on azimuth, the silhouette actually in frame is the
     // box's extent projected onto the camera's own right/up vectors, not
-    // its raw x/z size — using the raw size cropped the head at a near-side
+    // its raw x/z size - using the raw size cropped the head at a near-side
     // angle. Placing the camera at an arbitrary trial distance first, then
     // measuring the real projected half-extents from its own view matrix,
     // fits correctly at any azimuth.

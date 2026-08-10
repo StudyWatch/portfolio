@@ -3,7 +3,7 @@ import * as THREE from "three";
 // Original "command surface" environment: three floating displays around the
 // avatar, each representing one flagship product. Built procedurally (canvas
 // textures) rather than modeled/imported, so there is no dependency on any
-// third-party asset — and it replaces the reference project's single
+// third-party asset - and it replaces the reference project's single
 // hardcoded "Plane004 / screenlight" monitor mesh with something that
 // belongs to this scene's own story.
 
@@ -14,11 +14,11 @@ interface ScreenSpec {
   tags: string[];
   accent: string;
   /**
-   * Optional override for the screen's media texture — e.g. a short looping
+   * Optional override for the screen's media texture - e.g. a short looping
    * project demo. Defaults to the procedural canvas dashboard below. Any
    * THREE.Texture works here (a THREE.VideoTexture wrapping a looping,
    * muted <video> is the intended future use), since the material is built
-   * generically against whatever texture it's given — swapping to video
+   * generically against whatever texture it's given - swapping to video
    * later is a one-line change per project, not a rework of this file.
    */
   media?: () => THREE.Texture;
@@ -28,7 +28,7 @@ const SPECS: ScreenSpec[] = [
   {
     id: "balihofesh",
     title: "BaliHofesh",
-    subtitle: "Student platform — Open University Israel",
+    subtitle: "Student platform - Open University Israel",
     tags: ["51 edge functions", "Dual payment rails", "Realtime"],
     accent: "#7fae94",
   },
@@ -131,7 +131,7 @@ export interface CommandScreens {
 
 /**
  * Positions/scales the three screens relative to the loaded avatar's actual
- * bounds, rather than hardcoded world coordinates — so they sit just above
+ * bounds, rather than hardcoded world coordinates - so they sit just above
  * and around the character's head like real monitors regardless of which
  * GLB (placeholder or final) is mounted, or its scale.
  */
@@ -148,9 +148,9 @@ export function createCommandScreens(
 
   // Vertical placement is calibrated against the pulled-back "body" camera
   // shot (see cameraFit.ts: bodyTarget sits at center.y + unit*0.1, showing
-  // a visible vertical span of unit*1.2 — i.e. the frame's top edge is only
+  // a visible vertical span of unit*1.2 - i.e. the frame's top edge is only
   // ~0.7*unit above center). The old 0.66–0.78 offsets put the middle
-  // screen ABOVE that top edge — clipped out of frame entirely, which is
+  // screen ABOVE that top edge - clipped out of frame entirely, which is
   // exactly why the screens read as "too high" / barely visible. These sit
   // well inside the frame with real margin above and below instead.
   const positions: [number, number, number][] = [

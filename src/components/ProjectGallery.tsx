@@ -11,8 +11,8 @@ interface Props {
 
 /**
  * Tabs (only shown when a project has more than one MediaGroup) + a
- * crossfade carousel underneath. Deliberately manual-only navigation — no
- * autoplay — per the "no overwhelming auto-play behavior" brief. Items are
+ * crossfade carousel underneath. Deliberately manual-only navigation - no
+ * autoplay - per the "no overwhelming auto-play behavior" brief. Items are
  * typed image | video (see data/projects.ts) so a group can later mix in a
  * looping MP4/WebM demo without any change to this component.
  */

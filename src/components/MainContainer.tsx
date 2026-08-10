@@ -22,7 +22,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     // Debounced: `isDesktopView` gates whether TechStack (a 24-body physics
-    // scene) is mounted at all — an undebounced listener fires on every
+    // scene) is mounted at all - an undebounced listener fires on every
     // intermediate frame of a window resize/drag, tearing the whole
     // simulation down and respawning it from scratch each time, which reads
     // as the cluster "exploding" for no interaction-related reason. Waiting

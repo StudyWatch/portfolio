@@ -91,7 +91,7 @@ const WhatIDo = () => {
               <h4>Description</h4>
               <p>
                 LLM integration and AI agents that ship in production, not
-                demos — prompt/context engineering, structured JSON
+                demos - prompt/context engineering, structured JSON
                 workflows, fail-closed grading, and automated validation
                 pipelines that never fabricate an output they can't verify.
               </p>
@@ -131,7 +131,7 @@ const WhatIDo = () => {
               <h3>FULL-STACK</h3>
               <h4>Description</h4>
               <p>
-                End-to-end product ownership — React/TypeScript frontends,
+                End-to-end product ownership - React/TypeScript frontends,
                 Postgres schemas and RLS policies, realtime subscriptions,
                 and dozens of serverless edge functions, shipped and run in
                 production, not just prototyped.

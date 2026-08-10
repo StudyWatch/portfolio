@@ -1,7 +1,7 @@
 .other-work-section {
   margin: 0 auto;
   /* Extra top padding is the "clean end of My Work" breathing room the
-     pinned section's own exit dwell doesn't provide on its own — plain
+     pinned section's own exit dwell doesn't provide on its own - plain
      document-flow spacing, nothing overlapping or fixed-positioned. */
   padding: 140px 0 120px;
 }

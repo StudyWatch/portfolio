@@ -4,7 +4,7 @@ import type { AvatarProfile } from "../avatarProfile";
 
 // Profile-driven animation wiring: every clip name is looked up through the
 // given profile's `clips` map instead of being hardcoded, and every lookup
-// is defensive — a clip that doesn't exist on the currently-mounted rig is
+// is defensive - a clip that doesn't exist on the currently-mounted rig is
 // skipped rather than throwing, so swapping/adding avatars never crashes
 // the scene. Takes the profile explicitly (rather than importing a single
 // module-level active one) so any avatar can be mounted without touching
@@ -19,7 +19,7 @@ const setAnimations = (gltf: GLTF, profile: AvatarProfile) => {
     name ? THREE.AnimationClip.findByName(gltf.animations, name) : undefined;
 
   // The head (and neck, if configured) must never be driven by a baked
-  // clip — cursor-gaze tracking owns those bones exclusively, every frame.
+  // clip - cursor-gaze tracking owns those bones exclusively, every frame.
   // Without this, a looping clip's own head/neck keyframes (e.g. an idle
   // bob) fight the procedural rotation set in Scene.tsx's render loop,
   // which is exactly what caused the head to snap/jitter instead of
@@ -27,14 +27,14 @@ const setAnimations = (gltf: GLTF, profile: AvatarProfile) => {
   const gazeBones = [profile.bones.head, profile.bones.neck].filter(
     (name): name is string => Boolean(name)
   );
-  // Applied to looping/working clips only — a `pose` clip is a deliberate
+  // Applied to looping/working clips only - a `pose` clip is a deliberate
   // seated hold and should keep whatever torso angle it was authored with.
   const loopExcludeBones = [...gazeBones, ...(profile.stableBones ?? [])];
 
-  // Root-bone yaw only (translation — the idle "bob" — is kept). Some
+  // Root-bone yaw only (translation - the idle "bob" - is kept). Some
   // exports bake a near-constant yaw offset into the ROOT bone's animated
-  // rotation (not its bind pose) — e.g. a ~32° turn found on this rig's
-  // Hips track — which rotates the entire body away from camera for the
+  // rotation (not its bind pose) - e.g. a ~32° turn found on this rig's
+  // Hips track - which rotates the entire body away from camera for the
   // whole idle loop. Stripped so the torso/body stays front-facing while
   // still breathing/bobbing via its translation track.
   const yawLockBones = profile.yawLockBones ?? [];
@@ -82,7 +82,7 @@ const setAnimations = (gltf: GLTF, profile: AvatarProfile) => {
   }
 
   // Reserved for a future subtle reaction (e.g. an eyebrow-raise / smile
-  // morph) once the final avatar's face rig is known — no-ops safely until
+  // morph) once the final avatar's face rig is known - no-ops safely until
   // then rather than being ripped out.
   function hover(_gltf: GLTF, hoverDiv: HTMLDivElement | null) {
     if (!hoverDiv) return;
@@ -140,7 +140,7 @@ const excludeBoneTracks = (
 
 // Like excludeBoneTracks, but only drops the given bones' ROTATION track
 // (glTF exports as "<bone>.quaternion"), leaving position/scale tracks for
-// those same bones untouched — used to kill an unwanted baked root-bone yaw
+// those same bones untouched - used to kill an unwanted baked root-bone yaw
 // without also losing an idle translation bob on the same bone.
 const excludeBoneRotationTracks = (
   clip: THREE.AnimationClip,

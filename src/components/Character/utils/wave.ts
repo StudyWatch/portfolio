@@ -34,22 +34,22 @@ const TOTAL_DURATION =
  *
  * Generic IK targeting (aim the elbow/wrist at a computed world-space
  * point) kept producing poses that were geometrically "correct" but read
- * as anatomically warped on this specific rig — the elbow/shoulder
+ * as anatomically warped on this specific rig - the elbow/shoulder
  * skinning stretched, and pushing the wrist target toward the camera for
  * visibility caused perspective enlargement at this tight hero framing.
  * Repeated retargeting only traded one deformation for another.
  *
  * Instead these are absolute local-space Euler angles (degrees) for the
  * RightArm/RightForeArm bones, found by direct visual calibration against
- * the live hero camera (see the removed debugSetPose harness) — the exact
+ * the live hero camera (see the removed debugSetPose harness) - the exact
  * fallback the pose spec called for. They are ONLY valid for this rig's
  * rest pose (Timorfinal.glb); a different avatar would need recalibrating.
  *
  * Idle reference for this rig: upperArm ≈ (65, -7, 12)°, forearm ≈ (2, -1,
- * -19)°. The calibrated pose below reads as a moderate, natural greeting —
+ * -19)°. The calibrated pose below reads as a moderate, natural greeting -
  * elbow near shoulder height, forearm folded up toward the head without
  * touching it, no visible shoulder/sleeve stretching at any zoom level
- * tested — deliberately short of the more dramatic (and slightly warped
+ * tested - deliberately short of the more dramatic (and slightly warped
  * at the shoulder) 95°/125° version tried during calibration.
  */
 const UPPER_ARM_POSE_DEG = { x: 25, y: 75, z: 12 };
@@ -669,7 +669,7 @@ export function createWaveController(
      * 1 & 2. Upper arm + forearm:
      *
      * A calibrated absolute local pose for THIS rig (see the constants'
-     * comment above) — not IK. Only the palm/finger orientation below is
+     * comment above) - not IK. Only the palm/finger orientation below is
      * still computed from live geometry, since that has to react to the
      * real camera and stays cheap/robust to get right.
      */
@@ -726,7 +726,7 @@ export function createWaveController(
      * palm = toward camera
      *
      * Computed fresh from live geometry (head/camera positions), unlike
-     * the calibrated upper-arm/forearm pose above — this has to react to
+     * the calibrated upper-arm/forearm pose above - this has to react to
      * the real camera, and doing so is cheap and robust to get right.
      */
     const frame = computeGreetingFrame();

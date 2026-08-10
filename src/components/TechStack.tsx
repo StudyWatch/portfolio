@@ -14,10 +14,10 @@ import { TECH_ITEMS, type TechItem, type TechTier } from "../data/techStack";
 import { drawBadgeTexture, drawLogoBadgeTexture } from "./utils/techBadge";
 import { assetPath } from "../utils/assetPath";
 
-// A curated, evidence-backed map of what Timor actually builds with — not a
+// A curated, evidence-backed map of what Timor actually builds with - not a
 // random logo cycle. Every item in TECH_ITEMS traces to a real project
 // (BaliHofesh's 50+ edge functions, Relive's realtime moderation pipeline,
-// the AI grading engine's structured-output pipeline, etc.) — see
+// the AI grading engine's structured-output pipeline, etc.) - see
 // src/data/techStack.ts for the reasoning per item.
 //
 // Physics below is a deliberate regression baseline: the original MoncyDev
@@ -26,11 +26,11 @@ import { assetPath } from "../utils/assetPath";
 // combination is what produced the "collective mass, controlled kick" feel.
 // A prior pass replaced both with manual/visual workarounds while chasing an
 // unrelated bug (spheres respawning on every mouse move, fixed below via
-// stable spawnPosition) — this restores the original mechanism now that the
+// stable spawnPosition) - this restores the original mechanism now that the
 // actual bug is fixed.
 
 // Kept close to the original's [0.7, 0.8, 1, 1, 1] spread (not the later
-// 0.72–1.55 range) so mass — left at Rapier's default density — never
+// 0.72–1.55 range) so mass - left at Rapier's default density - never
 // varies enough between balls to make the cluster read as independently
 // floating objects instead of one weighted mass.
 const TIER_SCALE: Record<TechTier, number> = {
@@ -64,7 +64,7 @@ function SphereGeo({
 
   // Computed ONCE per mount, not inline in JSX. RigidBody applies its
   // `position` prop reactively (it re-syncs the body's transform whenever
-  // the prop value changes between renders) — an inline `r(20)` call would
+  // the prop value changes between renders) - an inline `r(20)` call would
   // re-evaluate on every re-render of this component. TechStack no longer
   // re-renders on pointer movement (see the tooltip-position ref below),
   // but this stays as a correctness guarantee regardless of what else ever
@@ -77,7 +77,7 @@ function SphereGeo({
 
   const material = useMemo(() => {
     // The texture is already a full-bleed colored composite (see
-    // techBadge.ts) — no material.color tint is needed, and none would help
+    // techBadge.ts) - no material.color tint is needed, and none would help
     // for pixels that started fully black anyway (black × tint = black).
     return new THREE.MeshPhysicalMaterial({
       map: texture,
@@ -95,7 +95,7 @@ function SphereGeo({
   // Original MoncyDev center-pull, verbatim: a constant-magnitude impulse
   // (not distance-proportional) toward the origin, direction normalized
   // from the ball's own position, magnitude scaled by the ball's own
-  // radius. Y pulls ~3x harder than X/Z — the original's signature
+  // radius. Y pulls ~3x harder than X/Z - the original's signature
   // "settles into a squat cluster" shape.
   useFrame((_state, delta) => {
     const rb = api.current;
@@ -151,7 +151,7 @@ type PointerProps = {
   isActive: boolean;
 };
 
-// A real kinematic physics body, exactly like the original — the "kick"
+// A real kinematic physics body, exactly like the original - the "kick"
 // comes from Rapier's own collision response to this collider moving
 // through the pack, not a manual force calculation layered on top.
 function Pointer({ vec, isActive }: PointerProps) {
@@ -190,7 +190,7 @@ const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
   const [hovered, setHovered] = useState<TechItem | null>(null);
   // Tooltip position is tracked via ref + direct DOM writes, never React
-  // state — mousemove firing setState would re-render this whole subtree
+  // state - mousemove firing setState would re-render this whole subtree
   // (including every SphereGeo/RigidBody) on every pixel of cursor motion.
   // That exact pattern was the root cause of the sphere-teleport bug this
   // file used to have; keeping pointer tracking out of React state entirely

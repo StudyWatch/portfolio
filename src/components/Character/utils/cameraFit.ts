@@ -33,14 +33,14 @@ export function computeCameraPlan(
 
   const verticalFovRad = (camera.fov * Math.PI) / 180;
   // Three.js zoom > 1 narrows the EFFECTIVE fov (more magnification), so a
-  // target height requires MORE distance at higher zoom, not less —
+  // target height requires MORE distance at higher zoom, not less -
   // multiply, don't divide (visible height at distance d is
   // 2*d*tan(fov/2)/zoom, so solving for d needs *zoom).
   const distanceForHeight = (h: number) =>
     (h * camera.zoom) / (2 * Math.tan(verticalFovRad / 2));
 
   // Hero: face, glasses, beard, shoulders, upper torso and a hint of
-  // waist — balanced rather than a tight crop. The look-at point sits well
+  // waist - balanced rather than a tight crop. The look-at point sits well
   // below the head (toward the chest) so there's real headroom above the
   // head and body below the shoulders, instead of the head sitting at the
   // very top edge of frame.

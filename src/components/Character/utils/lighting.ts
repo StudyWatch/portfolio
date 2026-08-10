@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { assetPath } from "../../../utils/assetPath";
 
 const setLighting = (scene: THREE.Scene) => {
-  // Warm amber/copper key + a cool sage fill — Timor's palette (see the
+  // Warm amber/copper key + a cool sage fill - Timor's palette (see the
   // command-screens accents), replacing the reference project's lavender.
   const directionalLight = new THREE.DirectionalLight(0xf2b273, 0);
   directionalLight.intensity = 0;
@@ -33,7 +33,7 @@ const setLighting = (scene: THREE.Scene) => {
       },
       undefined,
       function (error) {
-        // Not fatal — the scene renders fine without an environment map,
+        // Not fatal - the scene renders fine without an environment map,
         // just with flatter lighting. Doesn't block character loading
         // (that's a separate loader/promise), but log it so a missing/
         // broken HDR under a deployed base path is diagnosable instead of

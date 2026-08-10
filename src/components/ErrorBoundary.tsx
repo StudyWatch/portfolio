@@ -4,7 +4,7 @@ interface ErrorBoundaryProps {
   children: ReactNode;
   /** Rendered in place of the crashed subtree. Defaults to nothing. */
   fallback?: ReactNode;
-  /** Fires once, right after the crash is caught — e.g. to unblock a stuck loading state. */
+  /** Fires once, right after the crash is caught - e.g. to unblock a stuck loading state. */
   onError?: (error: Error, info: ErrorInfo) => void;
 }
 
