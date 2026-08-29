@@ -4,42 +4,77 @@
 .settings-control-note{margin-top:2px}
 
 @media(max-width:800px){
-  /* Home: image and copy are two separate blocks on mobile. The copy can never cover Chana's face. */
+  /* Home: photo and copy are separate layout blocks. Copy may overlap only the very bottom edge. */
   .home-hero.hero-fullbleed{
     min-height:0!important;
+    height:auto!important;
     background:#fffaf2!important;
-    overflow:hidden!important;
+    overflow:visible!important;
+    border-bottom:0!important;
   }
-  .home-hero.hero-fullbleed .media-picture{display:block!important;width:100%!important}
+  .home-hero.hero-fullbleed>picture{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    height:clamp(390px,64vh,520px)!important;
+    overflow:hidden!important;
+    background:#efe7da!important;
+    line-height:0!important;
+  }
   .home-hero.hero-fullbleed .hero-bg{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    object-fit:cover!important;
+    object-position:50% 28%!important;
+  }
+  .home-hero.hero-fullbleed .hero-wash{display:none!important}
+  .home-hero.hero-fullbleed .hero-inner{
     position:relative!important;
     inset:auto!important;
     display:block!important;
     width:100%!important;
-    height:auto!important;
-    aspect-ratio:1/1!important;
-    object-fit:cover!important;
-    object-position:center!important;
-  }
-  .home-hero.hero-fullbleed .hero-wash{display:none!important}
-  .home-hero.hero-fullbleed .hero-inner{
-    display:block!important;
     min-height:0!important;
+    height:auto!important;
     padding:0 12px 18px!important;
     margin:0!important;
     background:#fffaf2!important;
+    z-index:3!important;
   }
   .home-hero.hero-fullbleed .hero-content{
     position:relative!important;
     inset:auto!important;
     bottom:auto!important;
     top:auto!important;
+    right:auto!important;
+    left:auto!important;
     width:100%!important;
     max-width:none!important;
-    margin:-10px 0 0!important;
+    margin:-22px 0 0!important;
     transform:none!important;
-    z-index:3!important;
+    z-index:4!important;
+    padding:18px 16px!important;
+    border-radius:20px!important;
+    background:#fffdf9!important;
+    box-shadow:0 12px 30px rgba(12,34,55,.10)!important;
+    border:1px solid rgba(218,199,166,.7)!important;
   }
+  .home-hero.hero-fullbleed h1{
+    font-size:2.08rem!important;
+    line-height:1!important;
+    margin:5px 0 9px!important;
+  }
+  .home-hero.hero-fullbleed .hero-lead{
+    font-size:.86rem!important;
+    line-height:1.45!important;
+    margin:0 0 12px!important;
+  }
+  .home-hero.hero-fullbleed .hero-eyebrow{font-size:.72rem!important;margin-bottom:2px!important}
+  .home-hero.hero-fullbleed .hero-actions{gap:7px!important}
+  .home-hero.hero-fullbleed .hero-actions .btn{padding:10px 8px!important;font-size:.76rem!important;border-radius:11px!important}
 
   .about-hero.hero-fullbleed{min-height:555px}
   .about-hero.hero-fullbleed .hero-inner{min-height:555px!important;padding:0 0 14px!important}
@@ -49,7 +84,7 @@
   .tours-hero.hero-fullbleed .hero-inner{min-height:535px!important;padding:0 0 14px!important}
   .tours-hero.hero-fullbleed .hero-bg{object-position:center 42%!important}
 
-  /* On the destinations index, bring the actual destinations higher on screen. */
+  /* Destinations index: keep the hero compact so destinations appear quickly. */
   .generic-hero.hero-fullbleed{min-height:420px}
   .generic-hero.hero-fullbleed .hero-inner{min-height:420px!important;padding:0 0 12px!important}
   .generic-hero.hero-fullbleed .hero-bg{object-position:center 44%!important}
@@ -58,28 +93,23 @@
   .destination-hero.hero-fullbleed{min-height:525px}
   .destination-hero.hero-fullbleed .hero-inner{min-height:525px!important;padding:0 0 14px!important}
 
-  /* Keep the photograph visible instead of fading most of it to cream. */
+  /* Keep photographs visible instead of fading most of them to cream. */
   .hero-fullbleed .hero-wash,.destination-hero.hero-fullbleed .hero-wash{
     background:linear-gradient(180deg,rgba(8,26,45,.015) 0%,rgba(8,26,45,.025) 52%,rgba(255,250,242,.18) 65%,rgba(255,250,242,.72) 82%,rgba(255,250,242,.94) 100%)!important
   }
 
-  /* Smaller copy card on all mobile heroes. */
-  .hero-fullbleed .hero-content,.dest-hero.hero-fullbleed .hero-content{
+  /* Compact copy cards on the remaining mobile heroes. */
+  .hero-fullbleed:not(.home-hero) .hero-content,.dest-hero.hero-fullbleed .hero-content{
     padding:15px 16px!important;
     border-radius:18px!important;
     background:rgba(255,252,247,.97)!important;
     box-shadow:0 12px 34px rgba(12,34,55,.11)!important
   }
-  .home-hero.hero-fullbleed .hero-content{
-    border-radius:18px!important;
-    background:#fffdf9!important;
-    box-shadow:0 10px 28px rgba(12,34,55,.09)!important;
-  }
-  .hero-fullbleed h1,.dest-hero.hero-fullbleed h1{font-size:2.08rem!important;line-height:.98!important;margin-bottom:7px!important}
-  .hero-fullbleed .hero-lead{font-size:.84rem!important;line-height:1.42!important;margin-bottom:10px!important}
-  .hero-fullbleed .hero-eyebrow{font-size:.7rem!important;margin-bottom:3px!important}
-  .hero-fullbleed .hero-actions{gap:6px}
-  .hero-fullbleed .hero-actions .btn{padding:9px 7px;font-size:.74rem;border-radius:10px}
+  .hero-fullbleed:not(.home-hero) h1,.dest-hero.hero-fullbleed h1{font-size:2.08rem!important;line-height:.98!important;margin-bottom:7px!important}
+  .hero-fullbleed:not(.home-hero) .hero-lead{font-size:.84rem!important;line-height:1.42!important;margin-bottom:10px!important}
+  .hero-fullbleed:not(.home-hero) .hero-eyebrow{font-size:.7rem!important;margin-bottom:3px!important}
+  .hero-fullbleed:not(.home-hero) .hero-actions{gap:6px}
+  .hero-fullbleed:not(.home-hero) .hero-actions .btn{padding:9px 7px;font-size:.74rem;border-radius:10px}
 
   .trust-strip{margin-top:0!important}
   .trust-card{box-shadow:0 8px 24px rgba(22,39,61,.08)}
@@ -89,8 +119,11 @@
 }
 
 @media(max-width:430px){
+  .home-hero.hero-fullbleed>picture{height:clamp(380px,58vh,455px)!important}
+  .home-hero.hero-fullbleed .hero-bg{object-position:50% 25%!important}
   .home-hero.hero-fullbleed .hero-inner{padding-inline:10px!important;padding-bottom:14px!important}
-  .home-hero.hero-fullbleed .hero-content{margin-top:-8px!important}
+  .home-hero.hero-fullbleed .hero-content{margin-top:-18px!important;padding:16px 14px!important}
+  .home-hero.hero-fullbleed h1{font-size:1.98rem!important}
   .about-hero.hero-fullbleed{min-height:535px}
   .about-hero.hero-fullbleed .hero-inner{min-height:535px!important}
   .tours-hero.hero-fullbleed{min-height:510px}
@@ -99,6 +132,6 @@
   .generic-hero.hero-fullbleed .hero-inner{min-height:400px!important}
   .destination-hero.hero-fullbleed{min-height:505px}
   .destination-hero.hero-fullbleed .hero-inner{min-height:505px!important}
-  .hero-fullbleed h1,.dest-hero.hero-fullbleed h1{font-size:1.98rem!important}
-  .hero-fullbleed .hero-content,.dest-hero.hero-fullbleed .hero-content{padding:14px!important}
+  .hero-fullbleed:not(.home-hero) h1,.dest-hero.hero-fullbleed h1{font-size:1.98rem!important}
+  .hero-fullbleed:not(.home-hero) .hero-content,.dest-hero.hero-fullbleed .hero-content{padding:14px!important}
 }
