@@ -1,0 +1,18 @@
+ChanaTours LIVE FINAL - Visual Quality Edition
+Build date: 2026-08-29
+Package version: 2.4.0-live-content-control-final
+Target Supabase project: rxapuzqnatmcapgacpfb
+Backend status at last verification: ACTIVE_HEALTHY
+Production migrations in package/live history: 9
+Contact phone / WhatsApp / email: configured in LIVE and package
+Final admin UX pass: included
+Final visual quality pass: included
+Premium Hero desktop/mobile: included
+Seven destination premium Hero images: included
+Destination cards/highlights: minimum 900x600, production files 1200x800
+WebP + high-quality JPG fallbacks: included
+Premium source masters: assets/premium-source/
+Secrets: not included
+Admin Auth status: configured in LIVE for Chana; ADMIN_SETUP.sql retained for restore only
+Public tours: publish only verified real Chana departures
+Validation command: npm run check

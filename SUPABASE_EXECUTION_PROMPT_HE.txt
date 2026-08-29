@@ -1,0 +1,45 @@
+אני מצרף ZIP של פרויקט "לטייל עם חנה" שכבר מחובר ל-Supabase LIVE. בצע תחזוקה/בדיקה בפועל, אך אל תחיל מחדש migrations שכבר קיימים.
+
+TARGET קשיח:
+- Organization: Chana tours
+- Project: Chana Tours
+- Project ref / ID: rxapuzqnatmcapgacpfb
+- Region: eu-central-1
+- Expected status: ACTIVE_HEALTHY
+- אין שום קשר ל-BaliHofesh. אסור לבצע ב-BaliHofesh שום migration, SQL, Storage, Auth, Edge Function או שינוי אחר.
+
+לפני כל mutation:
+1. בדוק דרך Supabase את הארגון, Project ID, region וה-status.
+2. אם ה-ref אינו rxapuzqnatmcapgacpfb, עצור ואל תשנה כלום.
+3. קרא: 00_READ_ME_FIRST.txt, LIVE_CONNECTION.md, PROJECT_TARGET.md, RELEASE_STATUS.md, QA_REPORT.md, supabase/LIVE_SETUP_CHECKLIST.md, supabase/SECURITY.md, PRODUCTION_ACCEPTANCE.md ו-VISUAL_POLICY.md.
+
+מצב בסיס צפוי:
+- 9 migrations כבר הוחלו על הפרויקט החי:
+  202608280001_initial_schema
+  202608280002_seed_content
+  202608280003_leads_privacy_accessibility
+  202608280004_crm_operations
+  202608280005_crm_hardening
+  202608280006_post_deploy_advisor_hardening
+  202608280007_fix_crm_audit_trigger
+  202608280008_minimize_rpc_surface
+  202608290009_contact_details
+- אין להריץ ALL_MIGRATIONS.sql על הפרויקט החי. הוא one-shot reference לפרויקט חדש וריק בלבד.
+- Frontend כבר מחובר ל-Project URL + Publishable Key ב-js/supabase-config.js.
+- אין להכניס service_role, Secret Key או database password ל-Frontend.
+
+בכל בדיקה/שינוי:
+A. השווה migration history ו-schema למצב שב-ZIP. אם הכל קיים, אל תעשה DDL מיותר.
+B. וודא RLS על כל טבלאות האתר וה-CRM וש-anon אינו יכול לקרוא PII/CRM.
+C. וודא שהציבור חשוף רק ל-public_site_payload ו-submit_inquiry, ושה-RPCs של admin דורשים is_admin().
+D. וודא ש-17 מועדי supplier research נשארים source_only ואינם מופיעים ב-public_site_payload.
+E. וודא Storage:
+   - site-media: public read, admin write/update/delete.
+   - admin-documents: private + admin only.
+F. אין ליצור auth.users ידנית ב-SQL. אם עדיין אין Auth user אמיתי לחנה, זה blocker ידני. לאחר יצירת/Invite, השתמש ב-ADMIN_SETUP.sql עם האימייל האמיתי.
+G. הרץ POST_DEPLOY_VERIFY.sql, Security Advisor ו-Performance Advisor. תקן רק findings אמיתיים ובטוחים.
+H. הרץ npm run check.
+I. שמור על העיצוב: Home Hero צילום מלא עם חנה כחלק טבעי; Destination Heroes full-bleed scenic; ללא חנה חתוכה/מודבקת, ללא heavy blur, ושמור navy/gold/cream + Assistant.
+J. אם בוצעו שינויים, עדכן README/RELEASE_STATUS/QA_REPORT/migrations/checksums והחזר ZIP חדש ללא secrets.
+
+אל תכתוב PASS על בדיקה שלא בוצעה בפועל. אל תדרוס נתונים חיים ואל תקדם supplier research לטיול ציבורי רק כדי לעבור QA.

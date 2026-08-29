@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(here,'..');
+const url=(process.env.SUPABASE_URL||'').trim();
+const key=(process.env.SUPABASE_PUBLISHABLE_KEY||'').trim();
+if(!/^https:\/\/[a-z0-9]+\.supabase\.co$/i.test(url)) throw new Error('SUPABASE_URL is missing or invalid');
+if(!/^sb_publishable_/.test(key)&&key.split('.').length!==3) throw new Error('SUPABASE_PUBLISHABLE_KEY is missing or invalid');
+const body=`// Generated from environment variables. Browser-safe values only.\nwindow.CHANA_SUPABASE_CONFIG = ${JSON.stringify({url,publishableKey:key},null,2)};\n`;
+fs.writeFileSync(path.join(root,'js','supabase-config.js'),body,'utf8');
+console.log('Configured Supabase public client:',url);

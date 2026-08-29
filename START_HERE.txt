@@ -1,0 +1,39 @@
+לטייל עם חנה — START HERE — LIVE CONNECTED
+==========================================
+
+החבילה הזו כבר מחוברת ל-Supabase הייעודי:
+   Organization: Chana tours
+   Project: Chana Tours
+   Project ref: rxapuzqnatmcapgacpfb
+   Region: eu-central-1
+   Project URL: https://rxapuzqnatmcapgacpfb.supabase.co
+
+ה-Publishable Key הציבורי כבר נמצא ב-js/supabase-config.js.
+אין בחבילה service_role, secret key או database password.
+
+1) בדיקת הקוד והחבילה:
+   npm run check
+
+2) צפייה מקומית:
+   py -m http.server 5500
+   http://localhost:5500
+   http://localhost:5500/admin.html
+
+3) Supabase LIVE:
+   כל 8 המיגרציות כבר הוחלו בפרויקט היעד.
+   אין להריץ ALL_MIGRATIONS.sql שוב על הפרויקט החי.
+   POST_DEPLOY_VERIFY.sql מיועד לבדיקות read-only.
+
+4) Admin ראשון:
+   Auth user של חנה כבר קיים ומקושר לניהול ב-LIVE. במקרה של שחזור לפרויקט חדש,
+   הרץ supabase/ADMIN_SETUP.sql עם האימייל האמיתי שלה.
+
+5) לפני פרסום ציבורי:
+   פתח FINAL_GO_LIVE_CHECKLIST.txt. Auth ופרטי הקשר כבר הוגדרו. נשאר לפרסם רק טיולים אמיתיים שאושרו, כאשר יש מועדים לשיתוף.
+
+6) אדמין סופי:
+   במובייל כל הכלים נמצאים תחת "עוד".
+   לוח הבקרה מציג מוכנות לשיתוף, פניות חדשות ומה דורש טיפול.
+   פרסום מחקר ספק, ייבוא ואיפוס דורשים אישור נוסף.
+
+אסור לשנות BaliHofesh במסגרת הפרויקט הזה.
